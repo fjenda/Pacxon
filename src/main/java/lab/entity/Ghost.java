@@ -34,7 +34,7 @@ public class Ghost extends WorldEntity implements Collisionable {
 
         switch (this.texture) {
             case BLINKY -> this.speed = new Point2D(50, 50);    //Blinky - Red - Slow, breaks blocks
-            case INKY -> this.speed = new Point2D(5, 5);        //Inky - Blue - Hides in walls
+            case INKY -> this.speed = new Point2D(100, 100);        //Inky - Blue - Hides in walls
             case PINKY -> this.speed = new Point2D(100, 100);   //Pinky - Pink - Fast
             case CLYDE -> this.speed = new Point2D(50, 0);      //Clyde - Orange - Moves around walls
             default -> throw new IllegalStateException("Unexpected value: " + this.texture);
@@ -93,11 +93,15 @@ public class Ghost extends WorldEntity implements Collisionable {
             return;
         }
 
-        //System.out.println("SPAWN INKY");
+        if (position.getX() >= 20 && position.getX() <= game.getWidth() - 20 && position.getY() >= 70 && position.getY() <= game.getHeight() - 20) {
+            return;
+        }
+
         for (GridBlock block : grid.getBlocks()) {
             if (block.getPosition().getX() >= 20 && block.getPosition().getY() >= 70 && block.getPosition().getX() <= game.getWidth() - 20 && block.getPosition().getY() <= game.getHeight() - 20) {
                 if (block.getState().equals(BlockState.FILLED)) {
                     this.position = block.getPosition();
+                    return;
                 }
             }
         }
@@ -121,10 +125,15 @@ public class Ghost extends WorldEntity implements Collisionable {
     public void hitInky(Grid grid) {
         getNeighbours();
         for (GridBlock block : grid.getBlocks()) {
-            if (block.getState().equals(BlockState.EMPTY)) {
+            if (block.getState().equals(BlockState.EMPTY) || block.getState().equals(BlockState.WALL)) {
                 if (bounce(block)) return;
             }
         }
+    }
+
+    public void hitClyde(Grid grid) {
+        getNeighbours();
+        // CLYDE ALGORITHM
     }
     private boolean bounce(GridBlock block) {
         if (block.getBoundingBox().contains(above) || block.getBoundingBox().contains(under)) {
@@ -147,11 +156,7 @@ public class Ghost extends WorldEntity implements Collisionable {
         return false;
     }
 
-    public void hitClyde(Grid grid) {
-        getNeighbours();
-        // CLYDE ALGORITHM
 
-    }
     public void simulate(double deltaT) {
         position = position.add(speed.multiply(deltaT));
         this.centerPoint = new Point2D(position.getX() + (size.getX() / 2), position.getY() + (size.getY() / 2));

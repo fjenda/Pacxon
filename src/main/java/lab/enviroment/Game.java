@@ -38,7 +38,7 @@ public class Game {
 
         // Ghost loader
         this.ghostLoader = new GhostLoader( this, level);
-        ghostLoader.load();
+        this.ghostLoader.load();
 
         // Entities
         this.entities = new ArrayList<WorldEntity>();
@@ -90,6 +90,12 @@ public class Game {
                     }
                 }
             }
+
+            if (entity instanceof Ghost ghost) {
+                if (getPacman().getProgress().getAmount() > 20) {
+                    ghost.spawnInky(grid);
+                }
+            }
         }
     }
 
@@ -129,6 +135,4 @@ public class Game {
 
         return tmp;
     }
-
-
 }
