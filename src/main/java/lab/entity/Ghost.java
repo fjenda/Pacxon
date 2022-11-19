@@ -76,7 +76,7 @@ public class Ghost extends WorldEntity implements Collisionable {
     @Override
     public void hit(Grid grid) {
         currentTime = System.currentTimeMillis();
-        if (currentTime - switchCooldown < 100) {
+        if (currentTime - switchCooldown < 50) {
             return;
         }
         switchCooldown = currentTime;
@@ -88,7 +88,7 @@ public class Ghost extends WorldEntity implements Collisionable {
             case CLYDE -> hitClyde(grid);
         }
     }
-    public void spawnInky(Grid grid) {
+    public void spawnInky() {
         if (!texture.equals(GhostTexture.INKY)) {
             return;
         }
@@ -97,12 +97,10 @@ public class Ghost extends WorldEntity implements Collisionable {
             return;
         }
 
-        for (GridBlock block : grid.getBlocks()) {
-            if (block.getPosition().getX() >= 20 && block.getPosition().getY() >= 70 && block.getPosition().getX() <= game.getWidth() - 20 && block.getPosition().getY() <= game.getHeight() - 20) {
-                if (block.getState().equals(BlockState.FILLED)) {
-                    this.position = block.getPosition();
-                    return;
-                }
+        for (GridBlock block : game.getGrid().getBlocks()) {
+            if (block.getState().equals(BlockState.FILLED)) {
+                this.position = block.getPosition();
+                return;
             }
         }
     }
@@ -144,6 +142,7 @@ public class Ghost extends WorldEntity implements Collisionable {
             speed = new Point2D(speed.getX(), -speed.getY());
             calculateDirection();
             return true;
+
         } else if (block.getBoundingBox().contains(left) || block.getBoundingBox().contains(right)) {
             if (texture.equals(GhostTexture.BLINKY) && block.getState().equals(BlockState.FILLED)) {
                 block.setState(BlockState.EMPTY);
@@ -188,6 +187,10 @@ public class Ghost extends WorldEntity implements Collisionable {
 
     public Rectangle2D getBoundingBox() {
         return new Rectangle2D(position.getX(), position.getY(), size.getX(), size.getY());
+    }
+
+    public GhostTexture getTexture() {
+        return texture;
     }
 
 

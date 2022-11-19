@@ -8,6 +8,7 @@ import javafx.scene.shape.Polygon;
 import lab.enums.BlockState;
 
 import static lab.Constants.*;
+import static lab.enums.BlockState.TEMP;
 
 public class GridBlock extends Enviroment {
     private BlockState state;
@@ -26,12 +27,12 @@ public class GridBlock extends Enviroment {
         switch (state) {
             case WALL -> gc.drawImage(BLOCK_SPRITE, position.getX(), position.getY(), size.getX(), size.getY());
             case FILLED -> gc.drawImage(BLOCK_SPRITE, position.getX(), position.getY(), size.getX(), size.getY());
-            case TEMP -> gc.drawImage(BLOCK_TRANSPARENT_SPRITE, position.getX(), position.getY(), size.getX(), size.getY());
+            case PATH -> gc.drawImage(BLOCK_TRANSPARENT_SPRITE, position.getX(), position.getY(), size.getX(), size.getY());
             case EMPTY -> {
                 if (isBlockVisible) {
                     gc.setStroke(Color.WHITE);
                     gc.strokeRect(position.getX(), position.getY(), size.getX(), size.getY());
-                }
+                };
             }
         }
 

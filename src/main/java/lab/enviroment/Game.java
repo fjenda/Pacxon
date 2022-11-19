@@ -1,22 +1,14 @@
 package lab.enviroment;
 
-import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import lab.App;
 import lab.GhostLoader;
 import lab.entity.Ghost;
 import lab.entity.Pacman;
 import lab.entity.WorldEntity;
 import lab.enums.BlockState;
-import lab.enums.GhostTexture;
-import lab.interfaces.DrawableSimulable;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import static lab.Constants.TEST;
 
 public class Game {
 
@@ -85,7 +77,7 @@ public class Game {
                         return;
                     }
 
-                    if (gridBlock.getState().equals(BlockState.TEMP) && ghost.getBoundingBox().intersects(gridBlock.getBoundingBox())) {
+                    if (gridBlock.getState().equals(BlockState.PATH) && ghost.getBoundingBox().intersects(gridBlock.getBoundingBox())) {
                         getPacman().hit(grid);
                     }
                 }
@@ -93,7 +85,7 @@ public class Game {
 
             if (entity instanceof Ghost ghost) {
                 if (getPacman().getProgress().getAmount() > 20) {
-                    ghost.spawnInky(grid);
+                    ghost.spawnInky();
                 }
             }
         }

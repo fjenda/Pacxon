@@ -17,7 +17,6 @@ import lab.enviroment.Game;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Vector;
 
 import static lab.Constants.PACMAN_SPRITE;
 
@@ -51,7 +50,7 @@ public class Pacman extends WorldEntity implements Collisionable {
 
     public void resetPosition() {
         for (GridBlock block : tmpBlocks) {
-            if (block.getState() == BlockState.TEMP) {
+            if (block.getState() == BlockState.PATH) {
                 block.setState(BlockState.EMPTY);
             }
         }
@@ -119,50 +118,34 @@ public class Pacman extends WorldEntity implements Collisionable {
             }
         }
 
-        checkBlocks(game.getGrid());
+        checkBlocks();
     }
 
-    public void checkBlocks(Grid grid) {
-        for (GridBlock block : grid.getBlocks()) {
-            if (block.getBoundingBox().contains(centerPoint) && (!block.getState().equals(BlockState.WALL) && !block.getState().equals(BlockState.FILLED))) {
-                tmpBlocks.add(block);
-                block.setState(BlockState.TEMP);
-            }
-
-            if (block.getBoundingBox().contains(centerPoint) && (block.getState().equals(BlockState.WALL) || block.getState().equals(BlockState.FILLED))) {
-                if (!tmpBlocks.isEmpty()){
-                    // SUPER-SHAPE
-                    fillBlocks(tmpBlocks);
+    private void checkBlocks() {
+        for (GridBlock block : game.getGrid().getBlocks()) {
+            if (block.getBoundingBox().contains(centerPoint)) {
+                if (block.getState().equals(BlockState.EMPTY)) {
+                    block.setState(BlockState.PATH);
+                    tmpBlocks.add(block);
+                }
+                else {
+                    if (!tmpBlocks.isEmpty()) {
+                        fillBlocks(tmpBlocks);
+                    }
                 }
             }
         }
     }
 
-    public ArrayList<GridBlock> findCorners(ArrayList<GridBlock> tmpVisited) {
-        ArrayList<GridBlock> tmp = new ArrayList<>();
-
-        tmp.add(tmpVisited.get(0));
-
-        for (int i = 2; i < tmpVisited.size(); i++) {
-            if ((tmpVisited.get(i).getPosition().getX() > tmpVisited.get(i - 2).getPosition().getX() && tmpVisited.get(i).getPosition().getY() > tmpVisited.get(i - 2).getPosition().getY()) ||
-               (tmpVisited.get(i).getPosition().getX() < tmpVisited.get(i - 2).getPosition().getX() && tmpVisited.get(i).getPosition().getY() < tmpVisited.get(i - 2).getPosition().getY()) ||
-               (tmpVisited.get(i).getPosition().getX() < tmpVisited.get(i - 2).getPosition().getX() && tmpVisited.get(i).getPosition().getY() > tmpVisited.get(i - 2).getPosition().getY()) ||
-               (tmpVisited.get(i).getPosition().getX() > tmpVisited.get(i - 2).getPosition().getX() && tmpVisited.get(i).getPosition().getY() < tmpVisited.get(i - 2).getPosition().getY())) {
-                tmp.add(tmpVisited.get(i - 1));
-            }
-        }
-
-        tmp.add(tmpVisited.get(tmpVisited.size() - 1));
-
-        return tmp;
-    }
-
-    public void floodFill(GridBlock block) {
+    private void floodFill(GridBlock block) {
         Queue<GridBlock> queue = new LinkedList<>();
-
         queue.add(block);
 
-        block.setState(BlockState.FILLED);
+        if (block.getState().equals(BlockState.FILLED) || block.getState().equals(BlockState.WALL)) {
+            return;
+        }
+
+        block.setState(BlockState.TEMP);
 
         while (!queue.isEmpty()) {
             GridBlock tmp = queue.peek();
@@ -170,46 +153,45 @@ public class Pacman extends WorldEntity implements Collisionable {
 
             for (GridBlock gridBlock : game.getGrid().getBlocks()) {
                 if (gridBlock.getBoundingBox().contains(tmp.getCenterPoint().getX(), tmp.getCenterPoint().getY() - 20) && gridBlock.getState().equals(BlockState.EMPTY)) {
-                    gridBlock.setState(BlockState.FILLED);
+                    gridBlock.setState(BlockState.TEMP);
                     queue.add(gridBlock);
                 }
                 if (gridBlock.getBoundingBox().contains(tmp.getCenterPoint().getX(), tmp.getCenterPoint().getY() + 20) && gridBlock.getState().equals(BlockState.EMPTY)) {
-                    gridBlock.setState(BlockState.FILLED);
+                    gridBlock.setState(BlockState.TEMP);
                     queue.add(gridBlock);
                 }
                 if (gridBlock.getBoundingBox().contains(tmp.getCenterPoint().getX() - 20, tmp.getCenterPoint().getY()) && gridBlock.getState().equals(BlockState.EMPTY)) {
-                    gridBlock.setState(BlockState.FILLED);
+                    gridBlock.setState(BlockState.TEMP);
                     queue.add(gridBlock);
                 }
                 if (gridBlock.getBoundingBox().contains(tmp.getCenterPoint().getX() + 20, tmp.getCenterPoint().getY()) && gridBlock.getState().equals(BlockState.EMPTY)) {
-                    gridBlock.setState(BlockState.FILLED);
+                    gridBlock.setState(BlockState.TEMP);
                     queue.add(gridBlock);
                 }
             }
         }
     }
 
-    public void fillBlocks(ArrayList<GridBlock> tmpVisited) {
+    private void fillBlocks(ArrayList<GridBlock> tmpVisited) {
+        // https://www.idogendel.com/en/archives/738
         for (GridBlock block : tmpVisited) {
             block.setState(BlockState.FILLED);
         }
 
-        ArrayList<GridBlock> corners = findCorners(tmpVisited);
-        Polygon polygon = new Polygon();
-
-        for (GridBlock block : corners) {
-            //block.setState(BlockState.FILLED);
-
-            polygon.getPoints().add(block.getCenterPoint().getX());
-            polygon.getPoints().add(block.getCenterPoint().getY());
+        for (WorldEntity ghost : game.getGhosts()) {
+            for (GridBlock block : game.getGrid().getBlocks()) {
+                if (block.getBoundingBox().contains(ghost.position.getX(), ghost.position.getY())) {
+                    floodFill(block);
+                }
+            }
         }
 
         for (GridBlock block : game.getGrid().getBlocks()) {
-            if (polygon.contains(block.getPosition().getX(), block.getPosition().getY())) {
-                if (block.getState().equals(BlockState.EMPTY)) {
-                    floodFill(block);
-                    return;
-                }
+            if (block.getState().equals(BlockState.EMPTY)) {
+                block.setState(BlockState.FILLED);
+            }
+            if (block.getState().equals(BlockState.TEMP)) {
+                block.setState(BlockState.EMPTY);
             }
         }
 
@@ -262,14 +244,5 @@ public class Pacman extends WorldEntity implements Collisionable {
         double progress = count / (game.getGrid().getAll() / 100.);
 
         getProgress().update((int) progress);
-    }
-
-    public boolean isBetween(Point2D leftTop, Point2D rightBottom, Point2D pos) {
-        if (pos.getX() >= leftTop.getX() && pos.getX() <= rightBottom.getX()) {
-            if (pos.getY() >= leftTop.getY() && pos.getY() <= rightBottom.getY()) {
-                return true;
-            }
-        }
-        return false;
     }
 }
