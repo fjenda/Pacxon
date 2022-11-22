@@ -25,8 +25,7 @@ public class GridBlock extends Enviroment {
         gc.save();
 
         switch (state) {
-            case WALL -> gc.drawImage(BLOCK_SPRITE, position.getX(), position.getY(), size.getX(), size.getY());
-            case FILLED -> gc.drawImage(BLOCK_SPRITE, position.getX(), position.getY(), size.getX(), size.getY());
+            case WALL, FILLED -> gc.drawImage(BLOCK_SPRITE, position.getX(), position.getY(), size.getX(), size.getY());
             case PATH -> gc.drawImage(BLOCK_TRANSPARENT_SPRITE, position.getX(), position.getY(), size.getX(), size.getY());
             case EMPTY -> {
                 if (isBlockVisible) {

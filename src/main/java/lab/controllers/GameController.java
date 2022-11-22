@@ -9,6 +9,7 @@ import lab.DrawingThread;
 import lab.enums.Direction;
 import lab.enums.GameState;
 import lab.enviroment.Game;
+import lab.gui.Score;
 
 
 public class GameController {
@@ -57,7 +58,8 @@ public class GameController {
 
     public void stopGame() {
         animationTimer.stop();
-        controllerHandler.setScore(game.getPacman().getScore().toString());
+        controllerHandler.setScore(new Score(game.getName(), game.getPacman().getScore().getAmount()));
+        controllerHandler.getMenuController().getScoreListView().getItems().add((Score) game.getPacman().getScore());
         controllerHandler.changeScene(GameState.END);
     }
 

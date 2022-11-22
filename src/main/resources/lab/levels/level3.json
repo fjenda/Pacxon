@@ -5,11 +5,6 @@
     "texture":"BLINKY"
   },
   {
-    "x":-100,
-    "y":-1000,
-    "texture":"INKY"
-  },
-  {
     "x":340,
     "y":340,
     "texture":"PINKY"
@@ -18,5 +13,10 @@
     "x":340,
     "y":470,
     "texture":"CLYDE"
+  },
+  {
+    "x":-30,
+    "y":-30,
+    "texture":"INKY"
   }
 ]

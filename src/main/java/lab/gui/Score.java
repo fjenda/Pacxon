@@ -8,16 +8,24 @@ import lab.enviroment.Game;
 
 public class Score extends Interface {
     private final Point2D position;
+    private final String name;
 
-    public Score(Game game) {
-        super(game, 2000);
+    public Score(Game game, String name) {
+        super(game, 0);
 
         this.position = new Point2D(game.getWidth() / 2 - 50, 37);
+        this.name = name;
+    }
+
+    public Score(String name, int amount) {
+        super(null, amount);
+        this.position = null;
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return "" + amount;
+        return name + " - " + amount;
     }
 
     @Override
@@ -35,6 +43,6 @@ public class Score extends Interface {
 
     @Override
     public void updateInternal(int amount) {
-        this.amount++;
+        this.amount = amount;
     }
 }

@@ -32,6 +32,6 @@ public class Progress extends Interface {
     @Override
     public void updateInternal(int amount) {
         this.amount = amount;
-        System.out.println("UPDATING SCORE " + this.amount);
+        //System.out.println("UPDATING SCORE " + this.amount);
     }
 }

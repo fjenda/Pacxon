@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import lab.App;
 import lab.enums.GameState;
+import lab.gui.Score;
 
 import java.io.IOException;
 
@@ -52,7 +53,7 @@ public class ControllerHandler {
         this.name = name;
     }
 
-    public void setScore(String score) {
+    public void setScore(Score score) {
         this.endController.setScore(score);
     }
 

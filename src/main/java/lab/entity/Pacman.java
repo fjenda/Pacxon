@@ -8,6 +8,7 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Affine;
 import lab.enums.BlockState;
 import lab.enums.Direction;
+import lab.enviroment.Enviroment;
 import lab.enviroment.Grid;
 import lab.enviroment.GridBlock;
 import lab.gui.*;
@@ -22,7 +23,7 @@ import static lab.Constants.PACMAN_SPRITE;
 
 public class Pacman extends WorldEntity implements Collisionable {
     private Interface gui[];
-    ArrayList<GridBlock> tmpBlocks = new ArrayList<>();
+    ArrayList<Enviroment> tmpBlocks = new ArrayList<>();
     private double angle = 180;
     private long switchCooldown = 0L;
     private long currentTime = 0L;
@@ -30,7 +31,7 @@ public class Pacman extends WorldEntity implements Collisionable {
     public Pacman(Game game) {
         super(game, new Point2D(0, 50), new Point2D(20, 18));
 
-        this.gui = new Interface[]{new Health(game), new Score(game), new Progress(game)};
+        this.gui = new Interface[]{new Health(game), new Score(game, game.getName()), new Progress(game)};
     }
 
     @Override
@@ -49,8 +50,8 @@ public class Pacman extends WorldEntity implements Collisionable {
     }
 
     public void resetPosition() {
-        for (GridBlock block : tmpBlocks) {
-            if (block.getState() == BlockState.PATH) {
+        for (Enviroment enviroment : tmpBlocks) {
+            if (enviroment instanceof GridBlock block && block.getState() == BlockState.PATH) {
                 block.setState(BlockState.EMPTY);
             }
         }
@@ -60,11 +61,12 @@ public class Pacman extends WorldEntity implements Collisionable {
     }
 
     @Override
-    public void hit(Grid grid) {
+    public void hit() {
         resetPosition();
         for (Interface inter : gui) {
             if (inter instanceof Health health) {
                 updateHealth();
+                updateScore(-10);
             }
         }
     }
@@ -122,8 +124,8 @@ public class Pacman extends WorldEntity implements Collisionable {
     }
 
     private void checkBlocks() {
-        for (GridBlock block : game.getGrid().getBlocks()) {
-            if (block.getBoundingBox().contains(centerPoint)) {
+        for (Enviroment enviroment : game.getGrid().getBlocks()) {
+            if (enviroment instanceof GridBlock block && block.getBoundingBox().contains(centerPoint)) {
                 if (block.getState().equals(BlockState.EMPTY)) {
                     block.setState(BlockState.PATH);
                     tmpBlocks.add(block);
@@ -137,8 +139,12 @@ public class Pacman extends WorldEntity implements Collisionable {
         }
     }
 
-    private void floodFill(GridBlock block) {
-        Queue<GridBlock> queue = new LinkedList<>();
+    private void floodFill(Enviroment enviroment) {
+        if (!(enviroment instanceof GridBlock block)) {
+            return;
+        }
+
+        Queue<Enviroment> queue = new LinkedList<>();
         queue.add(block);
 
         if (block.getState().equals(BlockState.FILLED) || block.getState().equals(BlockState.WALL)) {
@@ -148,7 +154,8 @@ public class Pacman extends WorldEntity implements Collisionable {
         block.setState(BlockState.TEMP);
 
         while (!queue.isEmpty()) {
-            GridBlock tmp = queue.peek();
+            Enviroment current = queue.peek();
+            GridBlock tmp = (GridBlock) current;
             queue.remove();
 
             for (GridBlock gridBlock : game.getGrid().getBlocks()) {
@@ -172,26 +179,30 @@ public class Pacman extends WorldEntity implements Collisionable {
         }
     }
 
-    private void fillBlocks(ArrayList<GridBlock> tmpVisited) {
+    private void fillBlocks(ArrayList<Enviroment> tmpVisited) {
         // https://www.idogendel.com/en/archives/738
-        for (GridBlock block : tmpVisited) {
-            block.setState(BlockState.FILLED);
+        for (Enviroment enviroment : tmpVisited) {
+            if (enviroment instanceof GridBlock block) {
+                block.setState(BlockState.FILLED);
+            }
         }
 
         for (WorldEntity ghost : game.getGhosts()) {
-            for (GridBlock block : game.getGrid().getBlocks()) {
-                if (block.getBoundingBox().contains(ghost.position.getX(), ghost.position.getY())) {
+            for (Enviroment enviroment : game.getGrid().getBlocks()) {
+                if (enviroment instanceof GridBlock block && block.getBoundingBox().contains(ghost.position.getX(), ghost.position.getY())) {
                     floodFill(block);
                 }
             }
         }
 
-        for (GridBlock block : game.getGrid().getBlocks()) {
-            if (block.getState().equals(BlockState.EMPTY)) {
-                block.setState(BlockState.FILLED);
-            }
-            if (block.getState().equals(BlockState.TEMP)) {
-                block.setState(BlockState.EMPTY);
+        for (Enviroment enviroment : game.getGrid().getBlocks()) {
+            if (enviroment instanceof GridBlock block) {
+                if (block.getState().equals(BlockState.EMPTY)) {
+                    block.setState(BlockState.FILLED);
+                }
+                if (block.getState().equals(BlockState.TEMP)) {
+                    block.setState(BlockState.EMPTY);
+                }
             }
         }
 
@@ -235,14 +246,19 @@ public class Pacman extends WorldEntity implements Collisionable {
 
     public void updateProgress() {
         int count = 0;
-        for (GridBlock block : game.getGrid().getBlocks()) {
-            if (block.getState().equals(BlockState.FILLED)) {
+        for (Enviroment enviroment : game.getGrid().getBlocks()) {
+            if (enviroment instanceof GridBlock block && block.getState().equals(BlockState.FILLED)) {
                 count++;
             }
         }
 
         double progress = count / (game.getGrid().getAll() / 100.);
 
+        updateScore((int) (progress) * 10);
         getProgress().update((int) progress);
+    }
+
+    public void updateScore(int val) {
+        getScore().update(getScore().getAmount() + val);
     }
 }

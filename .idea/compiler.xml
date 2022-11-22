@@ -6,11 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Pacxon-master" />
         <module name="lab01" />
-        <module name="OOP_Pong" />
-        <module name="lab01-master" />
-        <module name="Pacxon" />
       </profile>
     </annotationProcessing>
   </component>

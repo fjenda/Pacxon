@@ -7,6 +7,7 @@ import lab.entity.Ghost;
 import lab.entity.Pacman;
 import lab.entity.WorldEntity;
 import lab.enums.BlockState;
+import lab.enums.GhostTexture;
 
 import java.util.ArrayList;
 
@@ -17,7 +18,6 @@ public class Game {
     private final ArrayList<WorldEntity> entities;
     private String name;
     private final Grid grid;
-    private final GhostLoader ghostLoader;
 
     public Game(double width, double height, String level) {
 
@@ -29,8 +29,8 @@ public class Game {
         this.grid = new Grid(this);
 
         // Ghost loader
-        this.ghostLoader = new GhostLoader( this, level);
-        this.ghostLoader.load();
+        GhostLoader ghostLoader = new GhostLoader(this, level);
+        ghostLoader.load();
 
         // Entities
         this.entities = new ArrayList<WorldEntity>();
@@ -57,7 +57,6 @@ public class Game {
     }
 
     public void simulate(double deltaT) {
-
         //Ghost collisions and simulating
         for (WorldEntity entity : entities) {
             entity.simulate(deltaT);
@@ -65,27 +64,29 @@ public class Game {
             if (entity instanceof Pacman pacman) {
                 for (WorldEntity ghost : entities) {
                     if (ghost instanceof Ghost ghost1 && ghost1.getBoundingBox().contains(pacman.getCenterPoint())) {
-                        pacman.hit(grid);
+                        pacman.hit();
                     }
                 }
             }
 
-            for (GridBlock gridBlock : grid.getBlocks()) {
-                if (entity instanceof Ghost ghost) {
+            for (Enviroment enviroment : grid.getBlocks()) {
+                if (entity instanceof Ghost ghost && enviroment instanceof GridBlock gridBlock) {
                     if ((gridBlock.getState().equals(BlockState.FILLED) || gridBlock.getState().equals(BlockState.WALL)) && ghost.getBoundingBox().intersects(gridBlock.getBoundingBox())) {
-                        ghost.hit(grid);
+                        ghost.hit();
                         return;
                     }
 
                     if (gridBlock.getState().equals(BlockState.PATH) && ghost.getBoundingBox().intersects(gridBlock.getBoundingBox())) {
-                        getPacman().hit(grid);
+                        getPacman().hit();
                     }
                 }
             }
 
             if (entity instanceof Ghost ghost) {
                 if (getPacman().getProgress().getAmount() > 20) {
-                    ghost.spawnInky();
+                    if (ghost.getTexture().equals(GhostTexture.INKY)) {
+                        ghost.spawnInky();
+                    }
                 }
             }
         }
@@ -126,5 +127,9 @@ public class Game {
         }
 
         return tmp;
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

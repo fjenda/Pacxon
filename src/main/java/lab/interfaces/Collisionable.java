@@ -9,6 +9,6 @@ public interface Collisionable extends Drawable {
         return getBoundingBox().intersects(other.getBoundingBox());
     }
 
-    void hit(Grid grid);
+    void hit();
 
 }

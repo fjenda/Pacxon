@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import lab.App;
+import lab.gui.Score;
 
 public class EndController {
     private ControllerHandler controllerHandler;
@@ -25,8 +26,8 @@ public class EndController {
         return scene;
     }
 
-    public void setScore(String score) {
-        this.score.setText(score);
+    public void setScore(Score score) {
+        this.score.setText("" + score.getAmount());
     }
 
     @FXML
