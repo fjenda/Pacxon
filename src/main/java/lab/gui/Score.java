@@ -23,9 +23,21 @@ public class Score extends Interface {
         this.name = name;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     @Override
     public String toString() {
         return name + " - " + amount;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Score score) {
+            return score.name.equals(name);
+        }
+        return false;
     }
 
     @Override

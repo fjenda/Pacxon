@@ -10,6 +10,13 @@ import lab.enums.Direction;
 import lab.enums.GameState;
 import lab.enviroment.Game;
 import lab.gui.Score;
+import lab.interfaces.GameListener;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class GameController {
@@ -18,6 +25,7 @@ public class GameController {
     @FXML private Canvas canvas;
     private AnimationTimer animationTimer;
     private Scene scene;
+    private List<Score> scoresList = new LinkedList<>();
 
     public void load(Scene scene, ControllerHandler controllerHandler) {
         this.scene = scene;
@@ -39,6 +47,18 @@ public class GameController {
         //Draw scene on a separate thread to avoid blocking UI.
         animationTimer = new DrawingThread(canvas, game);
         animationTimer.start();
+
+        game.setGameListener(new GameListener() {
+            @Override
+            public void stateChanged(int score) {
+                controllerHandler.setScore(new Score(name, score));
+            }
+
+            @Override
+            public void gameOver() {
+                stopGame();
+            }
+        });
     }
 
     public void fire(KeyEvent keyEvent) {
@@ -52,14 +72,25 @@ public class GameController {
             case D, RIGHT -> game.getPacman().move(Direction.RIGHT);
             case W, UP -> game.getPacman().move(Direction.UP);
             case F1 -> game.getGrid().showGrid();
+            case F2 -> game.getPacman().getHealth().update(0);
+            case F3 -> game.getPacman().getProgress().update(80);
             case ESCAPE -> stopGame();
+        }
+    }
+
+    private void saveScore() {
+        try (PrintWriter pw = new PrintWriter(new FileWriter("scores.csv"))) {
+            for (Score score : this.scoresList) {
+                pw.printf("%s;%d", score.getName(), score.getAmount());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     public void stopGame() {
         animationTimer.stop();
-        controllerHandler.setScore(new Score(game.getName(), game.getPacman().getScore().getAmount()));
-        controllerHandler.getMenuController().getScoreListView().getItems().add((Score) game.getPacman().getScore());
+        saveScore();
         controllerHandler.changeScene(GameState.END);
     }
 

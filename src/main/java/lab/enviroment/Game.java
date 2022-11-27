@@ -8,6 +8,7 @@ import lab.entity.Pacman;
 import lab.entity.WorldEntity;
 import lab.enums.BlockState;
 import lab.enums.GhostTexture;
+import lab.interfaces.GameListener;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,7 @@ public class Game {
     private final ArrayList<WorldEntity> entities;
     private String name;
     private final Grid grid;
+    private GameListener gameListener = new EmptyGameListener();
 
     public Game(double width, double height, String level) {
 
@@ -90,6 +92,10 @@ public class Game {
                 }
             }
         }
+
+
+        winGame();
+        gameOver();
     }
 
     public double getHeight() {
@@ -131,5 +137,20 @@ public class Game {
 
     public String getName() {
         return this.name;
+    }
+
+    public void setGameListener(GameListener gameListener) {
+    	this.gameListener = gameListener;
+    }
+
+    public void winGame() {
+        if (this.getPacman().getProgress().getAmount() >= 80) {
+            this.gameListener.gameOver();
+        }
+    }
+    public void gameOver() {
+        if (this.getPacman().getHealth().getAmount() == 0) {
+            this.gameListener.gameOver();
+        }
     }
 }

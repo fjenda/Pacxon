@@ -1,21 +1,14 @@
 package lab;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import lab.controllers.ControllerHandler;
-import lab.controllers.GameController;
-import lab.controllers.MenuController;
 import lab.enums.GameState;
 
 /**
  *  Class <b>App</b> - extends class Application and it is an entry point of the program
- * @author     Java I
+ * @author     Jan Fojtík
  */
 public class App extends Application {
 

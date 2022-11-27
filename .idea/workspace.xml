@@ -5,13 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c0cfd2bc-e8f9-4811-9a49-b5c0fb6b7deb" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/scores.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/lab/ScoreComparator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/lab/enviroment/EmptyGameListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/lab/interfaces/GameListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lab/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lab/controllers/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/controllers/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lab/controllers/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/controllers/MenuController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lab/entity/Ghost.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/entity/Ghost.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lab/entity/WorldEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/entity/WorldEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lab/enviroment/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/enviroment/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lab/gui/Score.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/gui/Score.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/lab/StartScreen.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/lab/StartScreen.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -41,6 +60,14 @@
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Honza\IdeaProjects\Pacxon" />
+      <recent name="C:\Users\Honza\IdeaProjects\Pacxon\src\main\resources\lab" />
+      <recent name="C:\Users\Honza\IdeaProjects\Pacxon\src\main\resources" />
+      <recent name="C:\Users\Honza\IdeaProjects\Pacxon\src\main\java\lab" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Pacxon" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="lab.App" />
@@ -64,6 +91,8 @@
       <workItem from="1669130563574" duration="313000" />
       <workItem from="1669133509614" duration="1548000" />
       <workItem from="1669280548416" duration="1931000" />
+      <workItem from="1669554184941" duration="13044000" />
+      <workItem from="1669570474126" duration="453000" />
     </task>
     <servers />
   </component>

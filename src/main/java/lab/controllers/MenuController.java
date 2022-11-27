@@ -1,15 +1,18 @@
 package lab.controllers;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import lab.App;
+import lab.ScoreComparator;
 import lab.enums.GameState;
 import lab.gui.Score;
+
+import java.io.*;
+import java.util.*;
 
 public class MenuController {
     private ControllerHandler controllerHandler;
@@ -21,6 +24,8 @@ public class MenuController {
     @FXML private Button leaderboardsButton;
     @FXML private Button backButton;
     @FXML private ListView<Score> scoreListView;
+    @FXML private TableView<Score> scoreTableView;
+    private List<Score> scoresList = new LinkedList<>();
 
     public void load(Scene scene, ControllerHandler controllerHandler) {
         this.controllerHandler = controllerHandler;
@@ -29,8 +34,19 @@ public class MenuController {
 
         this.scoreListView.visibleProperty().set(false);
         this.backButton.visibleProperty().set(false);
+        this.scoreTableView.visibleProperty().set(false);
 
-        this.scoreListView.getItems().add(new Score("Pacxon", 100));
+        TableColumn<Score, String> nameColumn = new TableColumn<>("Name");
+        nameColumn.setPrefWidth(127.5);
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        TableColumn<Score, Integer> scoreColumn = new TableColumn<>("Score");
+        scoreColumn.setPrefWidth(127.5);
+        scoreColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+
+        this.scoreTableView.getColumns().add(nameColumn);
+        this.scoreTableView.getColumns().add(scoreColumn);
+        loadScores();
     }
 
     public Scene getScene() {
@@ -52,6 +68,7 @@ public class MenuController {
 
         this.scoreListView.visibleProperty().set(true);
         this.backButton.visibleProperty().set(true);
+        this.scoreTableView.visibleProperty().set(true);
     }
 
     @FXML
@@ -63,6 +80,40 @@ public class MenuController {
 
         this.scoreListView.visibleProperty().set(false);
         this.backButton.visibleProperty().set(false);
+        this.scoreTableView.visibleProperty().set(false);
+    }
+
+    private void sortScores() {
+        Set<Score> tempScores = new HashSet<>(scoresList);
+        scoresList.clear();
+        scoresList.addAll(tempScores);
+        scoresList.sort(Comparator.comparingInt(Score::getAmount).reversed());
+    }
+    private void loadScores() {
+        scoresList.clear();
+
+        try (BufferedReader br = new BufferedReader(new FileReader("scores.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(";");
+                scoresList.add(new Score(parts[0], Integer.parseInt(parts[1])));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        sortScores();
+        this.scoreTableView.getItems().addAll(scoresList);
+    }
+
+    private void saveScores() {
+        try (PrintWriter pw = new PrintWriter(new FileWriter("scores.csv"))) {
+            for (Score score : this.scoresList) {
+                pw.printf("%s;%d", score.getName(), score.getAmount());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

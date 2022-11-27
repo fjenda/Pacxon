@@ -29,8 +29,8 @@ public abstract class WorldEntity implements DrawableSimulable {
     public void draw(GraphicsContext gc) {
         gc.save();
 
-        drawInternal(gc);
         this.centerPoint = new Point2D(position.getX() + (size.getX() / 2), position.getY() + (size.getY() / 2));
+        drawInternal(gc);
 
         gc.restore();
     }
