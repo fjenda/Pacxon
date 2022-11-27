@@ -5,32 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c0cfd2bc-e8f9-4811-9a49-b5c0fb6b7deb" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/GhostLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/GhostLoader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/controllers/ControllerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/controllers/ControllerHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/controllers/EndController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/controllers/EndController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/controllers/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/controllers/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/controllers/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/controllers/MenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lab/entity/Ghost.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/entity/Ghost.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/entity/Pacman.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/entity/Pacman.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/entity/WorldEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/entity/WorldEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/enums/Direction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/enums/Direction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/enviroment/Enviroment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/enviroment/Enviroment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/enviroment/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/enviroment/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/enviroment/GridBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/enviroment/GridBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/gui/Progress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/gui/Progress.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/gui/Score.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/gui/Score.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/interfaces/Collisionable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/interfaces/Collisionable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/lab/StartScreen.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/lab/StartScreen.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/lab/application.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/lab/application.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/lab/levels/level1.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/lab/levels/level1.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/lab/levels/level2.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/lab/levels/level2.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/lab/levels/level3.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/lab/levels/level3.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/lab/levels/test.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/lab/levels/test.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +15,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -60,7 +37,8 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/honza/Documents/Programování/JAVA I/Projekt/Pacxon-master&quot;
+    &quot;last_opened_file_path&quot;: &quot;/Users/honza/Documents/Programování/JAVA I/Projekt/Pacxon-master&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
   }
 }</component>
   <component name="RunManager">
@@ -82,6 +60,10 @@
       <updated>1669018786172</updated>
       <workItem from="1669018788445" duration="3651000" />
       <workItem from="1669110855291" duration="2425000" />
+      <workItem from="1669129459545" duration="750000" />
+      <workItem from="1669130563574" duration="313000" />
+      <workItem from="1669133509614" duration="1548000" />
+      <workItem from="1669280548416" duration="1931000" />
     </task>
     <servers />
   </component>
@@ -93,7 +75,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>

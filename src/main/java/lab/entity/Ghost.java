@@ -14,7 +14,11 @@ import lab.enviroment.Grid;
 import lab.enviroment.GridBlock;
 import lab.interfaces.Collisionable;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import static lab.Constants.*;
 import static lab.enums.Direction.*;
@@ -53,15 +57,6 @@ public class Ghost extends WorldEntity implements Collisionable {
         gc.setFill(Color.RED);
 
         gc.drawImage(textures[texture.ordinal()], position.getX(), position.getY(), size.getX(), size.getY());
-
-        gc.setFill(Color.RED);
-        for (Enviroment enviroment : game.getGrid().getBlocks()) {
-            if (enviroment instanceof GridBlock block) {
-                if (block.getBoundingBox().contains(above) || block.getBoundingBox().contains(under) || block.getBoundingBox().contains(left) || block.getBoundingBox().contains(right)) {
-                    gc.fillOval(block.getBoundingBox().getMinX() + 5, block.getBoundingBox().getMinY() + 5, block.getBoundingBox().getWidth() - 10, block.getBoundingBox().getHeight() - 10);
-                }
-            }
-        }
 
         gc.restore();
     }
@@ -140,34 +135,49 @@ public class Ghost extends WorldEntity implements Collisionable {
         }
     }
 
-    private boolean hug(GridBlock block, GridBlock block2) {
-        if (direction == LEFT || direction == RIGHT) {
-            if (block.getBoundingBox().contains(above) && block2.getBoundingBox().contains(under)) {
-                if (block.getState().equals(BlockState.EMPTY) && (block2.getState().equals(BlockState.FILLED) || block2.getState().equals(BlockState.WALL))) {
-                    speed = new Point2D(0, -defaultSpeed.getY());
-                    position = new Point2D(position.getX() - 1, position.getY());
-                    direction = UP;
-                    return true;
-                } else if (block2.getState().equals(BlockState.EMPTY) && (block.getState().equals(BlockState.FILLED) || block.getState().equals(BlockState.WALL))) {
-                    speed = new Point2D(0, defaultSpeed.getY());
-                    position = new Point2D(position.getX() + 1, position.getY());
-                    direction = DOWN;
-                    return true;
+    private ArrayList<GridBlock> getRadar() {
+        Point2D above = new Point2D(centerPoint.getX(), centerPoint.getY() - 15);
+        Point2D under = new Point2D(centerPoint.getX(), centerPoint.getY() + 15);
+        Point2D left = new Point2D(centerPoint.getX() - 15, centerPoint.getY());
+        Point2D right = new Point2D(centerPoint.getX() + 15, centerPoint.getY());
+
+        // 0 - above / 1 - under / 2 - left / 3 - right
+        ArrayList<GridBlock> blocks = new ArrayList<>();
+
+        for (Enviroment enviroment : game.getGrid().getBlocks()) {
+            if (enviroment instanceof GridBlock block) {
+                if (block.getBoundingBox().contains(above)) {
+                    blocks.set(0, block);
+                }
+
+                if (block.getBoundingBox().contains(under)) {
+                    blocks.set(1, block);
+                }
+
+                if (block.getBoundingBox().contains(left)) {
+                    blocks.set(2, block);
+                }
+
+                if (block.getBoundingBox().contains(right)) {
+                    blocks.set(3, block);
                 }
             }
+        }
+
+        return blocks;
+    }
+
+    private boolean hug(GridBlock block, GridBlock block2) {
+        // 0 - above / 1 - under / 2 - left / 3 - right
+        ArrayList<GridBlock> blocks = getRadar();
+
+        if (direction == LEFT || direction == RIGHT) {
+            if (blocks.get(0).getState().equals(BlockState.EMPTY) && blocks.get(1).getState().equals(BlockState.EMPTY)) {
+                return true;
+            }
         } else if (direction == UP || direction == DOWN) {
-            if (block.getBoundingBox().contains(left) && block2.getBoundingBox().contains(right)) {
-                if (block.getState().equals(BlockState.EMPTY) && (block2.getState().equals(BlockState.FILLED) || block2.getState().equals(BlockState.WALL))) {
-                    speed = new Point2D(-defaultSpeed.getX(), 0);
-                    position = new Point2D(position.getX(), position.getY() + 1);
-                    direction = LEFT;
-                    return true;
-                } else if (block2.getState().equals(BlockState.EMPTY) && (block.getState().equals(BlockState.FILLED) || block.getState().equals(BlockState.WALL))) {
-                    speed = new Point2D(defaultSpeed.getX(), 0);
-                    position = new Point2D(position.getX(), position.getY() - 1);
-                    direction = RIGHT;
-                    return true;
-                }
+            if (blocks.get(2).getState().equals(BlockState.EMPTY) && blocks.get(3).getState().equals(BlockState.EMPTY)) {
+                return true;
             }
         }
 
@@ -218,13 +228,13 @@ public class Ghost extends WorldEntity implements Collisionable {
     }
 
     public void calculateDirection() {
-        if (speed.equals(new Point2D(100, 100))) {
+        if (speed.getX() > 0 && speed.getY() > 0) {
             this.direction = DOWN;
-        } else if (speed.equals(new Point2D(100, -100))) {
+        } else if (speed.getX() > 0 && speed.getY() < 0) {
             this.direction = RIGHT;
-        } else if (speed.equals(new Point2D(-100, 100))) {
+        } else if (speed.getX() < 0 && speed.getY() > 0) {
             this.direction = LEFT;
-        } else if (speed.equals(new Point2D(-100, -100))) {
+        } else if (speed.getX() < 0 && speed.getY() < 0) {
             this.direction = UP;
         }
     }
