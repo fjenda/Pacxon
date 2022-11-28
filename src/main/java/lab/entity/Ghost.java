@@ -72,10 +72,10 @@ public class Ghost extends WorldEntity implements Collisionable {
     }
 
     public void getNeighbours() {
-        above = new Point2D(centerPoint.getX(), centerPoint.getY() - 11);
-        under = new Point2D(centerPoint.getX(), centerPoint.getY() + 11);
-        left = new Point2D(centerPoint.getX() - 11, centerPoint.getY());
-        right = new Point2D(centerPoint.getX() + 11, centerPoint.getY());
+        above = new Point2D(centerPoint.getX(), centerPoint.getY() - 10);
+        under = new Point2D(centerPoint.getX(), centerPoint.getY() + 10);
+        left = new Point2D(centerPoint.getX() - 10, centerPoint.getY());
+        right = new Point2D(centerPoint.getX() + 10, centerPoint.getY());
     }
     @Override
     public void hit() {
@@ -230,33 +230,45 @@ public class Ghost extends WorldEntity implements Collisionable {
         // 0 - above / 1 - under / 2 - left / 3 - right
         ArrayList<GridBlock> blocks = getRadar();
 
-        if (direction.equals(LEFT) || direction.equals(RIGHT)) {
-            if (blocks.get(0).getState().equals(BlockState.EMPTY) && blocks.get(1).getState().equals(BlockState.EMPTY)) {
-
-                System.out.println("Deciding");
-                if (direction.equals(RIGHT)) {
-                    this.speed = new Point2D(0, 50);
-                    correctPosition();
-                    this.direction = DOWN;
-                } else {
-                    this.speed = new Point2D(0, -50);
-                    correctPosition();
-                    this.direction = UP;
+        switch (direction) {
+            case LEFT -> {
+                if (blocks.get(0).getState().equals(BlockState.EMPTY) && blocks.get(1).getState().equals(BlockState.EMPTY)) {
+                    if (Math.round(position.getX() % 20) == 0) {
+                        System.out.println("left - 2nd if");
+                        this.position = new Point2D(this.position.getX() - 1, this.position.getY());
+                        this.speed = new Point2D(0, -50);
+                        this.direction = UP;
+                    }
                 }
             }
-
-        } else if (direction.equals(UP) || direction.equals(DOWN)) {
-            if (blocks.get(2).getState().equals(BlockState.EMPTY) && blocks.get(3).getState().equals(BlockState.EMPTY)) {
-
-                System.out.println("Deciding");
-                if (direction.equals(DOWN)) {
-                    this.speed = new Point2D(-50, 0);
-                    correctPosition();
-                    this.direction = LEFT;
-                } else {
-                    this.speed = new Point2D(50, 0);
-                    correctPosition();
-                    this.direction = RIGHT;
+            case RIGHT -> {
+                if (blocks.get(0).getState().equals(BlockState.EMPTY) && blocks.get(1).getState().equals(BlockState.EMPTY)) {
+                    if (Math.round(position.getX() % 20) == 0) {
+                        System.out.println("right - 2nd if");
+                        this.position = new Point2D(this.position.getX() + 1, this.position.getY());
+                        this.speed = new Point2D(0, 50);
+                        this.direction = DOWN;
+                    }
+                }
+            }
+            case UP -> {
+                if (blocks.get(2).getState().equals(BlockState.EMPTY) && blocks.get(3).getState().equals(BlockState.EMPTY)) {
+                    if (Math.round(position.getY() % 20) == 0) {
+                        System.out.println("up - 2nd if");
+                        this.position = new Point2D(this.position.getX(), this.position.getY() - 1);
+                        this.speed = new Point2D(-50, 0);
+                        this.direction = LEFT;
+                    }
+                }
+            }
+            case DOWN -> {
+                if (blocks.get(2).getState().equals(BlockState.EMPTY) && blocks.get(3).getState().equals(BlockState.EMPTY)) {
+                    if (Math.round(position.getY() % 20) == 0) {
+                        System.out.println("down - 2nd if");
+                        this.position = new Point2D(this.position.getX(), this.position.getY() + 1);
+                        this.speed = new Point2D(50, 0);
+                        this.direction = RIGHT;
+                    }
                 }
             }
         }

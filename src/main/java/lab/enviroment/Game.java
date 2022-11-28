@@ -59,6 +59,9 @@ public class Game {
     }
 
     public void simulate(double deltaT) {
+        winGame();
+        gameOver();
+
         //Ghost collisions and simulating
         for (WorldEntity entity : entities) {
             entity.simulate(deltaT);
@@ -92,10 +95,6 @@ public class Game {
                 }
             }
         }
-
-
-        winGame();
-        gameOver();
     }
 
     public double getHeight() {
@@ -150,6 +149,7 @@ public class Game {
     }
     public void gameOver() {
         if (this.getPacman().getHealth().getAmount() == 0) {
+            System.out.println("Game over");
             this.gameListener.gameOver();
         }
     }

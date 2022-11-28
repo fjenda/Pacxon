@@ -5,19 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c0cfd2bc-e8f9-4811-9a49-b5c0fb6b7deb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/scores.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/lab/ScoreComparator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/lab/enviroment/EmptyGameListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/lab/interfaces/GameListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scores.csv" beforeDir="false" afterPath="$PROJECT_DIR$/scores.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lab/controllers/EndController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/controllers/EndController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lab/controllers/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/controllers/GameController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lab/controllers/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/controllers/MenuController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lab/entity/Ghost.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/entity/Ghost.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/entity/WorldEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/entity/WorldEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lab/enviroment/EmptyGameListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/enviroment/EmptyGameListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lab/enviroment/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/enviroment/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lab/gui/Score.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/gui/Score.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/lab/StartScreen.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/lab/StartScreen.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lab/interfaces/GameListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/interfaces/GameListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/lab/EndScreen.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/lab/EndScreen.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +32,6 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -51,15 +48,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/honza/Documents/Programování/JAVA I/Projekt/Pacxon-master&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/Honza/IdeaProjects/Pacxon_Tomáš",
+    "nodejs_package_manager_path": "npm"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Honza\IdeaProjects\Pacxon" />
@@ -92,8 +89,17 @@
       <workItem from="1669133509614" duration="1548000" />
       <workItem from="1669280548416" duration="1931000" />
       <workItem from="1669554184941" duration="13044000" />
-      <workItem from="1669570474126" duration="453000" />
+      <workItem from="1669570474126" duration="1074000" />
+      <workItem from="1669644925475" duration="5785000" />
     </task>
+    <task id="LOCAL-00001" summary="Score saving, UI updates">
+      <created>1669570966280</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1669570966280</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -121,5 +127,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Score saving, UI updates" />
+    <option name="LAST_COMMIT_MESSAGE" value="Score saving, UI updates" />
   </component>
 </project>

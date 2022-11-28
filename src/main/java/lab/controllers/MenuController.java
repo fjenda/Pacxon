@@ -37,11 +37,11 @@ public class MenuController {
         this.scoreTableView.visibleProperty().set(false);
 
         TableColumn<Score, String> nameColumn = new TableColumn<>("Name");
-        nameColumn.setPrefWidth(127.5);
+        nameColumn.setPrefWidth(127);
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
         TableColumn<Score, Integer> scoreColumn = new TableColumn<>("Score");
-        scoreColumn.setPrefWidth(127.5);
+        scoreColumn.setPrefWidth(126);
         scoreColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
 
         this.scoreTableView.getColumns().add(nameColumn);
@@ -84,7 +84,7 @@ public class MenuController {
     }
 
     private void sortScores() {
-        Set<Score> tempScores = new HashSet<>(scoresList);
+        Set<Score> tempScores = new LinkedHashSet<>(scoresList);
         scoresList.clear();
         scoresList.addAll(tempScores);
         scoresList.sort(Comparator.comparingInt(Score::getAmount).reversed());
@@ -95,8 +95,8 @@ public class MenuController {
         try (BufferedReader br = new BufferedReader(new FileReader("scores.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
-                String[] parts = line.split(";");
-                scoresList.add(new Score(parts[0], Integer.parseInt(parts[1])));
+                String[] split = line.split(";");
+                scoresList.add(new Score(split[0], Integer.parseInt(split[1])));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -104,16 +104,6 @@ public class MenuController {
 
         sortScores();
         this.scoreTableView.getItems().addAll(scoresList);
-    }
-
-    private void saveScores() {
-        try (PrintWriter pw = new PrintWriter(new FileWriter("scores.csv"))) {
-            for (Score score : this.scoresList) {
-                pw.printf("%s;%d", score.getName(), score.getAmount());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @FXML

@@ -54,7 +54,11 @@ public class Score extends Interface {
     }
 
     @Override
-    public void updateInternal(int amount) {
-        this.amount = amount;
+    public void updateInternal(int newValue) {
+        this.amount = newValue;
+
+        if (this.amount < 0) {
+            this.amount = 0;
+        }
     }
 }

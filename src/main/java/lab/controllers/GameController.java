@@ -12,11 +12,11 @@ import lab.enviroment.Game;
 import lab.gui.Score;
 import lab.interfaces.GameListener;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class GameController {
@@ -49,13 +49,10 @@ public class GameController {
         animationTimer.start();
 
         game.setGameListener(new GameListener() {
-            @Override
-            public void stateChanged(int score) {
-                controllerHandler.setScore(new Score(name, score));
-            }
 
             @Override
             public void gameOver() {
+                controllerHandler.setScore((Score) game.getPacman().getScore());
                 stopGame();
             }
         });
@@ -79,9 +76,29 @@ public class GameController {
     }
 
     private void saveScore() {
+        loadScores();
+
+        String name = game.getName();
+        int scoreVal = game.getPacman().getScore().getAmount();
+        scoresList.add(new Score(name, scoreVal));
+
         try (PrintWriter pw = new PrintWriter(new FileWriter("scores.csv"))) {
             for (Score score : this.scoresList) {
-                pw.printf("%s;%d", score.getName(), score.getAmount());
+                pw.printf("%s;%d\n", score.getName(), score.getAmount());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadScores() {
+        scoresList.clear();
+
+        try (BufferedReader br = new BufferedReader(new FileReader("scores.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] split = line.split(";");
+                scoresList.add(new Score(split[0], Integer.parseInt(split[1])));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -89,8 +106,8 @@ public class GameController {
     }
 
     public void stopGame() {
-        animationTimer.stop();
         saveScore();
+        animationTimer.stop();
         controllerHandler.changeScene(GameState.END);
     }
 
