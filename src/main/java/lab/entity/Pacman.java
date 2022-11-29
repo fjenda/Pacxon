@@ -25,6 +25,8 @@ public class Pacman extends WorldEntity implements Collisionable {
     private double angle = 180;
     private long switchCooldown = 0L;
     private long currentTime = 0L;
+    private long poweredUpTime = 0L;
+    private boolean powered = false;
 
     public Pacman(Game game) {
         super(game, new Point2D(0, 50), new Point2D(20, 18));
@@ -70,6 +72,10 @@ public class Pacman extends WorldEntity implements Collisionable {
     }
 
     public void simulate(double deltaT) {
+        currentTime = System.currentTimeMillis();
+        if (poweredUpTime + 10000 < currentTime) {
+            powered = false;
+        }
     }
 
     public Point2D getPosition() {
@@ -239,7 +245,7 @@ public class Pacman extends WorldEntity implements Collisionable {
     }
 
     public void updateHealth() {
-        getHealth().update(getHealth().getAmount() - 1);
+        getHealth().update(-1);
     }
 
     public void updateProgress() {
@@ -257,6 +263,15 @@ public class Pacman extends WorldEntity implements Collisionable {
     }
 
     public void updateScore(int val) {
-        getScore().update(getScore().getAmount() + val);
+        getScore().update(val);
+    }
+
+    public void setPowered(boolean powered) {
+        this.powered = powered;
+        this.poweredUpTime = System.currentTimeMillis();
+    }
+
+    public boolean isPowered() {
+        return powered;
     }
 }

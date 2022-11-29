@@ -3,6 +3,7 @@ package lab.enviroment;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import lab.GhostLoader;
+import lab.entity.BonusItem;
 import lab.entity.Ghost;
 import lab.entity.Pacman;
 import lab.entity.WorldEntity;
@@ -38,6 +39,7 @@ public class Game {
         this.entities = new ArrayList<>();
         this.entities.add(new Pacman(this));
         this.entities.addAll(ghostLoader.createGhosts());
+        this.entities.add(new BonusItem(this));
     }
 
     public void draw(GraphicsContext gc) {
@@ -69,7 +71,19 @@ public class Game {
             if (entity instanceof Pacman pacman) {
                 for (WorldEntity ghost : entities) {
                     if (ghost instanceof Ghost ghost1 && ghost1.getBoundingBox().contains(pacman.getCenterPoint())) {
-                        pacman.hit();
+                        if (pacman.isPowered()) {
+                            ghost1.resetPosition();
+                            pacman.getScore().update(200);
+                        } else {
+                            pacman.hit();
+                        }
+                    }
+                }
+
+                for (WorldEntity bonus : entities) {
+                    if (bonus instanceof BonusItem bonusItem && bonusItem.getBoundingBox().contains(pacman.getCenterPoint())) {
+                        bonusItem.hit();
+                        pacman.setPowered(true);
                     }
                 }
             }
@@ -82,7 +96,11 @@ public class Game {
                     }
 
                     if (gridBlock.getState().equals(BlockState.PATH) && ghost.getBoundingBox().intersects(gridBlock.getBoundingBox())) {
-                        getPacman().hit();
+                        if (getPacman().isPowered()) {
+                            ghost.hit();
+                        } else {
+                            getPacman().hit();
+                        }
                     }
                 }
             }

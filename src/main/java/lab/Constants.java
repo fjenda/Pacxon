@@ -13,9 +13,13 @@ public final class Constants {
     public static final Image INKY_SPRITE;
     public static final Image PINKY_SPRITE;
     public static final Image CLYDE_SPRITE;
+    public static final Image SCARED_SPRITE;
     public static final Image BLOCK_SPRITE;
     public static final Image BLOCK_TRANSPARENT_SPRITE;
     public static final Image HEART_SPRITE;
+    public static final Image START_SCREEN;
+    public static final Image GAME_OVER_SCREEN;
+    public static final Image CHERRY_SPRITE;
     public static final String LEVEL1;
     public static final String LEVEL2;
     public static final String LEVEL3;
@@ -38,11 +42,19 @@ public final class Constants {
         INKY_SPRITE = new Image(Constants.class.getResourceAsStream("entity/ghosts/inky.gif"));
         PINKY_SPRITE = new Image(Constants.class.getResourceAsStream("entity/ghosts/pinky.gif"));
         CLYDE_SPRITE = new Image(Constants.class.getResourceAsStream("entity/ghosts/clyde.gif"));
+        SCARED_SPRITE = new Image(Constants.class.getResourceAsStream("entity/ghosts/blueghost.gif"));
 
         //ENVIROMENT SPRITES
         BLOCK_SPRITE = new Image(Constants.class.getResourceAsStream("enviroment/block.png"));
         BLOCK_TRANSPARENT_SPRITE = new Image(Constants.class.getResourceAsStream("enviroment/block-transparent-3.png"));
         HEART_SPRITE = new Image(Constants.class.getResourceAsStream("gui/heart.png"));
+
+        //BONUS ITEMS
+        CHERRY_SPRITE = new Image(Constants.class.getResourceAsStream("enviroment/cherry.png"));
+
+        //SCREEN ITEMS
+        START_SCREEN = new Image(Constants.class.getResourceAsStream("gui/start-screen.gif"));
+        GAME_OVER_SCREEN = new Image(Constants.class.getResourceAsStream("gui/end-screen.gif"));
 
         //FONT
         Font.loadFont(Constants.class.getResource("font/emulogic.ttf").toExternalForm(), 20);

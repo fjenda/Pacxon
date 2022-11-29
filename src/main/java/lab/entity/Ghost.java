@@ -18,7 +18,7 @@ import static lab.Constants.*;
 import static lab.enums.Direction.*;
 
 public class Ghost extends WorldEntity implements Collisionable {
-    private final Image[] textures = new Image[]{ BLINKY_SPRITE, INKY_SPRITE, PINKY_SPRITE, CLYDE_SPRITE };
+    private final Image[] textures = new Image[]{ BLINKY_SPRITE, INKY_SPRITE, PINKY_SPRITE, CLYDE_SPRITE, SCARED_SPRITE };
     private Point2D speed;
     private final GhostTexture texture;
     private Direction direction = RIGHT;
@@ -46,7 +46,11 @@ public class Ghost extends WorldEntity implements Collisionable {
     public void drawInternal(GraphicsContext gc) {
         gc.save();
 
-        gc.drawImage(textures[texture.ordinal()], position.getX(), position.getY(), size.getX(), size.getY());
+        if (game.getPacman().isPowered()) {
+            gc.drawImage(textures[4], position.getX(), position.getY(), size.getX(), size.getY());
+        } else {
+            gc.drawImage(textures[texture.ordinal()], position.getX(), position.getY(), size.getX(), size.getY());
+        }
 
         gc.restore();
     }
@@ -184,28 +188,28 @@ public class Ghost extends WorldEntity implements Collisionable {
 
         if (direction == LEFT || direction == RIGHT) {
             if (blocks.get(0).getState().equals(BlockState.EMPTY) && (blocks.get(1).getState().equals(BlockState.WALL) || blocks.get(1).getState().equals(BlockState.FILLED))) {
-                this.speed = new Point2D(0, -50);
+                this.speed = new Point2D(0, -30);
                 correctPosition();
                 this.direction = UP;
                 return true;
             }
 
             if ((blocks.get(0).getState().equals(BlockState.WALL) || blocks.get(0).getState().equals(BlockState.FILLED)) && blocks.get(1).getState().equals(BlockState.EMPTY)) {
-                this.speed = new Point2D(0, 50);
+                this.speed = new Point2D(0, 30);
                 correctPosition();
                 this.direction = DOWN;
                 return true;
             }
         } else if (direction == UP || direction == DOWN) {
             if (blocks.get(2).getState().equals(BlockState.EMPTY) && (blocks.get(3).getState().equals(BlockState.WALL) || blocks.get(3).getState().equals(BlockState.FILLED))) {
-                this.speed = new Point2D(-50, 0);
+                this.speed = new Point2D(-30, 0);
                 correctPosition();
                 this.direction = LEFT;
                 return true;
             }
 
             if ((blocks.get(2).getState().equals(BlockState.WALL) || blocks.get(2).getState().equals(BlockState.FILLED)) && blocks.get(3).getState().equals(BlockState.EMPTY)) {
-                this.speed = new Point2D(50, 0);
+                this.speed = new Point2D(30, 0);
                 correctPosition();
                 this.direction = RIGHT;
                 return true;
@@ -223,10 +227,8 @@ public class Ghost extends WorldEntity implements Collisionable {
             case LEFT -> {
                 if (!readyToDecide && blocks.get(0).getState().equals(BlockState.EMPTY) && blocks.get(1).getState().equals(BlockState.EMPTY)) {
                     readyToDecide = true;
-                    System.out.println("Ready to decide");
                 }
                 if (readyToDecide) {
-                    System.out.println("left - 2nd if");
                     this.speed = new Point2D(0, -30);
                     this.direction = UP;
                     readyToDecide = false;
@@ -235,10 +237,8 @@ public class Ghost extends WorldEntity implements Collisionable {
             case RIGHT -> {
                 if (!readyToDecide && blocks.get(0).getState().equals(BlockState.EMPTY) && blocks.get(1).getState().equals(BlockState.EMPTY)) {
                     readyToDecide = true;
-                    System.out.println("Ready to decide");
                 }
                 if (readyToDecide) {
-                    System.out.println("right - 2nd if");
                     this.speed = new Point2D(0, 30);
                     this.direction = DOWN;
                     readyToDecide = false;
@@ -247,10 +247,8 @@ public class Ghost extends WorldEntity implements Collisionable {
             case UP -> {
                 if (!readyToDecide && blocks.get(2).getState().equals(BlockState.EMPTY) && blocks.get(3).getState().equals(BlockState.EMPTY)) {
                     readyToDecide = true;
-                    System.out.println("Ready to decide");
                 }
                 if (readyToDecide) {
-                    System.out.println("up - 2nd if");
                     this.speed = new Point2D(30, 0);
                     this.direction = RIGHT;
                     readyToDecide = false;
@@ -259,10 +257,8 @@ public class Ghost extends WorldEntity implements Collisionable {
             case DOWN -> {
                 if (!readyToDecide && blocks.get(2).getState().equals(BlockState.EMPTY) && blocks.get(3).getState().equals(BlockState.EMPTY)) {
                     readyToDecide = true;
-                    System.out.println("Ready to decide");
                 }
                 if (readyToDecide) {
-                    System.out.println("down - 2nd if");
                     this.speed = new Point2D(-30, 0);
                     this.direction = LEFT;
                     readyToDecide = false;
@@ -305,7 +301,6 @@ public class Ghost extends WorldEntity implements Collisionable {
 
         if (texture.equals(GhostTexture.CLYDE) && (tmp.getX() > 20 || tmp.getY() > 20)) {
             previousPosition = position;
-            System.out.println("Clyde - decide");
             decide();
         }
     }

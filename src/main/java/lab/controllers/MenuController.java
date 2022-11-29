@@ -5,12 +5,15 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import lab.App;
 import lab.enums.GameState;
 import lab.gui.Score;
 
 import java.io.*;
 import java.util.*;
+
+import static lab.Constants.START_SCREEN;
 
 public class MenuController {
     private ControllerHandler controllerHandler;
@@ -24,11 +27,13 @@ public class MenuController {
     @FXML private ListView<Score> scoreListView;
     @FXML private TableView<Score> scoreTableView;
     private final List<Score> scoresList = new LinkedList<>();
-
+    private final Image background = START_SCREEN;
     public void load(Scene scene, ControllerHandler controllerHandler) {
         this.controllerHandler = controllerHandler;
         this.scene = scene;
         this.scene.getStylesheets().add(App.class.getResource("application.css").toExternalForm());
+
+        //this.canvas.getGraphicsContext2D().drawImage(START_SCREEN, 0, 0, 316, 70.4);
 
         this.scoreListView.visibleProperty().set(false);
         this.backButton.visibleProperty().set(false);

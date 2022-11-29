@@ -33,6 +33,6 @@ public class Health extends Interface {
 
     @Override
     public void updateInternal(int amount) {
-        this.amount = amount;
+        this.amount += amount;
     }
 }
