@@ -2,8 +2,6 @@ package lab.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.control.TextField;
 import lab.App;
 import lab.enums.GameState;
 

@@ -2,7 +2,6 @@ package lab.enviroment;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import lab.enums.BlockState;
 import lab.interfaces.Drawable;
 
@@ -13,7 +12,8 @@ public class Grid extends Enviroment implements Drawable {
     private boolean isGridVisible;
     private long switchCooldown = 0L;
     private long currentTime = 0L;
-    private int rows, cols;
+    private final int rows;
+    private final int cols;
     private int all;
 
     public Grid(Game game) {

@@ -1,13 +1,11 @@
 package lab.controllers;
 
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lab.App;
-import lab.ScoreComparator;
 import lab.enums.GameState;
 import lab.gui.Score;
 
@@ -25,7 +23,7 @@ public class MenuController {
     @FXML private Button backButton;
     @FXML private ListView<Score> scoreListView;
     @FXML private TableView<Score> scoreTableView;
-    private List<Score> scoresList = new LinkedList<>();
+    private final List<Score> scoresList = new LinkedList<>();
 
     public void load(Scene scene, ControllerHandler controllerHandler) {
         this.controllerHandler = controllerHandler;
@@ -110,9 +108,4 @@ public class MenuController {
     public void exitGame() {
         controllerHandler.exit();
     }
-
-    public ListView<Score> getScoreListView() {
-        return scoreListView;
-    }
-
 }

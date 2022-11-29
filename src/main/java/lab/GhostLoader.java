@@ -8,11 +8,8 @@ import lab.enviroment.Game;
 import org.json.*;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class GhostLoader {
@@ -27,7 +24,7 @@ public class GhostLoader {
     }
 
     public void load() {
-        StringBuilder str = new StringBuilder("");
+        StringBuilder str = new StringBuilder();
 
         try (BufferedReader br = new BufferedReader(new FileReader(source))) {
             String line;
@@ -54,7 +51,7 @@ public class GhostLoader {
     }
 
     public ArrayList<WorldEntity> createGhosts() {
-        ArrayList<WorldEntity> tmp = new ArrayList<WorldEntity>();
+        ArrayList<WorldEntity> tmp = new ArrayList<>();
 
         for (int i = 0; i < ghostsArr.length(); i++) {
             JSONObject jsonObject = ghostsArr.getJSONObject(i);

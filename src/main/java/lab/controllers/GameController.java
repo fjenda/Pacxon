@@ -10,13 +10,10 @@ import lab.enums.Direction;
 import lab.enums.GameState;
 import lab.enviroment.Game;
 import lab.gui.Score;
-import lab.interfaces.GameListener;
 
 import java.io.*;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 
 
 public class GameController {
@@ -25,7 +22,7 @@ public class GameController {
     @FXML private Canvas canvas;
     private AnimationTimer animationTimer;
     private Scene scene;
-    private List<Score> scoresList = new LinkedList<>();
+    private final List<Score> scoresList = new LinkedList<>();
 
     public void load(Scene scene, ControllerHandler controllerHandler) {
         this.scene = scene;
@@ -48,13 +45,9 @@ public class GameController {
         animationTimer = new DrawingThread(canvas, game);
         animationTimer.start();
 
-        game.setGameListener(new GameListener() {
-
-            @Override
-            public void gameOver() {
-                controllerHandler.setScore((Score) game.getPacman().getScore());
-                stopGame();
-            }
+        game.setGameListener(() -> {
+            controllerHandler.setScore((Score) game.getPacman().getScore());
+            stopGame();
         });
     }
 

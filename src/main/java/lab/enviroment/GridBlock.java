@@ -4,11 +4,9 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import lab.enums.BlockState;
 
 import static lab.Constants.*;
-import static lab.enums.BlockState.TEMP;
 
 public class GridBlock extends Enviroment {
     private BlockState state;
@@ -31,7 +29,7 @@ public class GridBlock extends Enviroment {
                 if (isBlockVisible) {
                     gc.setStroke(Color.WHITE);
                     gc.strokeRect(position.getX(), position.getY(), size.getX(), size.getY());
-                };
+                }
             }
         }
 
@@ -42,10 +40,6 @@ public class GridBlock extends Enviroment {
 
     public Rectangle2D getBoundingBox() {
         return new Rectangle2D(position.getX(), position.getY(), size.getX(), size.getY());
-    }
-
-    public Polygon getPolygonBox() {
-        return new Polygon(position.getX(), position.getY(), position.getX() + size.getX(), position.getY() + size.getY(), position.getX() + size.getX(), position.getY(), position.getX(), position.getY() + size.getY());
     }
 
     public Point2D getPosition() {

@@ -2,12 +2,9 @@ package lab.controllers;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import lab.App;
 import lab.enums.GameState;
 import lab.gui.Score;
@@ -15,7 +12,6 @@ import lab.gui.Score;
 import java.io.IOException;
 
 public class ControllerHandler {
-    private final App app;
     private final GameController gameController;
     private final MenuController menuController;
     private final EndController endController;
@@ -24,8 +20,7 @@ public class ControllerHandler {
     private String name;
     private String level;
 
-    public ControllerHandler(App app, Stage primaryStage) throws IOException {
-        this.app = app;
+    public ControllerHandler(Stage primaryStage) throws IOException {
         this.primaryStage = primaryStage;
 
         FXMLLoader menuLoader = new FXMLLoader(App.class.getResource("StartScreen.fxml"));
@@ -63,22 +58,16 @@ public class ControllerHandler {
 
     public void changeScene(GameState scene) {
         switch (scene) {
-            case MENU -> {
-                primaryStage.setScene(menuController.getScene());
-            }
+            case MENU -> primaryStage.setScene(menuController.getScene());
 
-            case LEVELS -> {
-                primaryStage.setScene(levelSelectionController.getScene());
-            }
+            case LEVELS -> primaryStage.setScene(levelSelectionController.getScene());
 
             case GAME -> {
                 primaryStage.setScene(gameController.getScene());
                 gameController.startGame(name, level);
             }
 
-            case END -> {
-                primaryStage.setScene(endController.getScene());
-            }
+            case END -> primaryStage.setScene(endController.getScene());
 
         }
 
@@ -87,21 +76,5 @@ public class ControllerHandler {
 
     public void exit() {
         primaryStage.close();
-    }
-
-    public GameController getGameController() {
-        return gameController;
-    }
-
-    public MenuController getMenuController() {
-        return menuController;
-    }
-
-    public EndController getEndController() {
-        return endController;
-    }
-
-    public LevelSelectionController getLevelSelectionController() {
-        return levelSelectionController;
     }
 }

@@ -35,7 +35,7 @@ public class Game {
         ghostLoader.load();
 
         // Entities
-        this.entities = new ArrayList<WorldEntity>();
+        this.entities = new ArrayList<>();
         this.entities.add(new Pacman(this));
         this.entities.addAll(ghostLoader.createGhosts());
     }

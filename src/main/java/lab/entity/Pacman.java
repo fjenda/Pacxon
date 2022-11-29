@@ -4,12 +4,10 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Affine;
 import lab.enums.BlockState;
 import lab.enums.Direction;
 import lab.enviroment.Enviroment;
-import lab.enviroment.Grid;
 import lab.enviroment.GridBlock;
 import lab.gui.*;
 import lab.interfaces.Collisionable;
@@ -22,7 +20,7 @@ import java.util.Queue;
 import static lab.Constants.PACMAN_SPRITE;
 
 public class Pacman extends WorldEntity implements Collisionable {
-    private Interface gui[];
+    private final Interface[] gui;
     ArrayList<Enviroment> tmpBlocks = new ArrayList<>();
     private double angle = 180;
     private long switchCooldown = 0L;
@@ -64,7 +62,7 @@ public class Pacman extends WorldEntity implements Collisionable {
     public void hit() {
         resetPosition();
         for (Interface inter : gui) {
-            if (inter instanceof Health health) {
+            if (inter instanceof Health) {
                 updateHealth();
                 updateScore(-10);
             }

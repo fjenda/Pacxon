@@ -4,17 +4,14 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import lab.enums.BlockState;
 import lab.enums.Direction;
 import lab.enums.GhostTexture;
 import lab.enviroment.Enviroment;
 import lab.enviroment.Game;
-import lab.enviroment.Grid;
 import lab.enviroment.GridBlock;
 import lab.interfaces.Collisionable;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 import static lab.Constants.*;
@@ -23,12 +20,12 @@ import static lab.enums.Direction.*;
 public class Ghost extends WorldEntity implements Collisionable {
     private final Image[] textures = new Image[]{ BLINKY_SPRITE, INKY_SPRITE, PINKY_SPRITE, CLYDE_SPRITE };
     private Point2D speed;
-    private final Point2D defaultSpeed;
     private final GhostTexture texture;
     private Direction direction = RIGHT;
     private Point2D above, under, left, right;
     private long switchCooldown = 0L;
     private long currentTime;
+    private boolean readyToDecide = false;
     Random rnd = new Random();
 
     //textureIndex - 0 - 3, 0 - blinky / 1 - inky / 2 - pinky / 3 - clyde
@@ -38,31 +35,18 @@ public class Ghost extends WorldEntity implements Collisionable {
         this.texture = texture;
 
         switch (this.texture) {
-            case BLINKY -> this.speed = new Point2D(50, 50);    //Blinky - Red - Slow, breaks blocks
-            case INKY -> this.speed = new Point2D(0, 0);    //Inky - Blue - Hides in walls
-            case PINKY -> this.speed = new Point2D(100, 100);   //Pinky - Pink - Fast
-            case CLYDE -> this.speed = new Point2D(50, 0);      //Clyde - Orange - Moves around walls
+            case BLINKY -> this.speed = new Point2D(30, 30);    //Blinky - Red - Slow, breaks blocks
+            case INKY -> this.speed = new Point2D(0, 0);        //Inky - Blue - Hides in walls
+            case PINKY -> this.speed = new Point2D(75, 75);     //Pinky - Pink - Fast
+            case CLYDE -> this.speed = new Point2D(30, 0);      //Clyde - Orange - Moves around walls
             default -> throw new IllegalStateException("Unexpected value: " + this.texture);
         }
-
-        this.defaultSpeed = new Point2D(this.speed.getX(), this.speed.getX());
     }
 
     public void drawInternal(GraphicsContext gc) {
         gc.save();
 
-        gc.setFill(Color.RED);
-
         gc.drawImage(textures[texture.ordinal()], position.getX(), position.getY(), size.getX(), size.getY());
-
-        if (this.texture.equals(GhostTexture.CLYDE)) {
-            decide();
-            ArrayList<GridBlock> blocks = getRadar();
-            gc.fillOval(blocks.get(0).getPosition().getX(), blocks.get(0).getPosition().getY(), 20, 20);
-            gc.fillOval(blocks.get(1).getPosition().getX(), blocks.get(1).getPosition().getY(), 20, 20);
-            gc.fillOval(blocks.get(2).getPosition().getX(), blocks.get(2).getPosition().getY(), 20, 20);
-            gc.fillOval(blocks.get(3).getPosition().getX(), blocks.get(3).getPosition().getY(), 20, 20);
-        }
 
         gc.restore();
     }
@@ -77,6 +61,7 @@ public class Ghost extends WorldEntity implements Collisionable {
         left = new Point2D(centerPoint.getX() - 10, centerPoint.getY());
         right = new Point2D(centerPoint.getX() + 10, centerPoint.getY());
     }
+
     @Override
     public void hit() {
         currentTime = System.currentTimeMillis();
@@ -92,6 +77,7 @@ public class Ghost extends WorldEntity implements Collisionable {
             case INKY -> hitInky();
         }
     }
+
     public void spawnInky() {
         if (position.getX() >= 20 && position.getX() <= game.getWidth() - 20 && position.getY() >= 70 && position.getY() <= game.getHeight() - 20) {
             return;
@@ -105,6 +91,7 @@ public class Ghost extends WorldEntity implements Collisionable {
             }
         }
     }
+
     public void hitPinky() {
         getNeighbours();
         for (Enviroment enviroment : game.getGrid().getBlocks()) {
@@ -113,6 +100,7 @@ public class Ghost extends WorldEntity implements Collisionable {
             }
         }
     }
+
     public void hitBlinky() {
         getNeighbours();
         for (Enviroment enviroment : game.getGrid().getBlocks()) {
@@ -121,6 +109,7 @@ public class Ghost extends WorldEntity implements Collisionable {
             }
         }
     }
+
     public void hitInky() {
         getNeighbours();
         for (Enviroment enviroment : game.getGrid().getBlocks()) {
@@ -148,7 +137,7 @@ public class Ghost extends WorldEntity implements Collisionable {
         Point2D right = new Point2D(centerPoint.getX() + 15, centerPoint.getY());
 
         // 0 - above / 1 - under / 2 - left / 3 - right
-        ArrayList<GridBlock> blocks = new ArrayList<GridBlock>(4);
+        ArrayList<GridBlock> blocks = new ArrayList<>(4);
         blocks.add(null);
         blocks.add(null);
         blocks.add(null);
@@ -188,8 +177,8 @@ public class Ghost extends WorldEntity implements Collisionable {
             this.position = new Point2D(this.position.getX() - 1, this.position.getY());
         }
     }
+
     private boolean hug() {
-        System.out.println("hug");
         // 0 - above / 1 - under / 2 - left / 3 - right
         ArrayList<GridBlock> blocks = getRadar();
 
@@ -232,47 +221,56 @@ public class Ghost extends WorldEntity implements Collisionable {
 
         switch (direction) {
             case LEFT -> {
-                if (blocks.get(0).getState().equals(BlockState.EMPTY) && blocks.get(1).getState().equals(BlockState.EMPTY)) {
-                    if (Math.round(position.getX() % 20) == 0) {
-                        System.out.println("left - 2nd if");
-                        this.position = new Point2D(this.position.getX() - 1, this.position.getY());
-                        this.speed = new Point2D(0, -50);
-                        this.direction = UP;
-                    }
+                if (!readyToDecide && blocks.get(0).getState().equals(BlockState.EMPTY) && blocks.get(1).getState().equals(BlockState.EMPTY)) {
+                    readyToDecide = true;
+                    System.out.println("Ready to decide");
+                }
+                if (readyToDecide) {
+                    System.out.println("left - 2nd if");
+                    this.speed = new Point2D(0, -30);
+                    this.direction = UP;
+                    readyToDecide = false;
                 }
             }
             case RIGHT -> {
-                if (blocks.get(0).getState().equals(BlockState.EMPTY) && blocks.get(1).getState().equals(BlockState.EMPTY)) {
-                    if (Math.round(position.getX() % 20) == 0) {
-                        System.out.println("right - 2nd if");
-                        this.position = new Point2D(this.position.getX() + 1, this.position.getY());
-                        this.speed = new Point2D(0, 50);
-                        this.direction = DOWN;
-                    }
+                if (!readyToDecide && blocks.get(0).getState().equals(BlockState.EMPTY) && blocks.get(1).getState().equals(BlockState.EMPTY)) {
+                    readyToDecide = true;
+                    System.out.println("Ready to decide");
+                }
+                if (readyToDecide) {
+                    System.out.println("right - 2nd if");
+                    this.speed = new Point2D(0, 30);
+                    this.direction = DOWN;
+                    readyToDecide = false;
                 }
             }
             case UP -> {
-                if (blocks.get(2).getState().equals(BlockState.EMPTY) && blocks.get(3).getState().equals(BlockState.EMPTY)) {
-                    if (Math.round(position.getY() % 20) == 0) {
-                        System.out.println("up - 2nd if");
-                        this.position = new Point2D(this.position.getX(), this.position.getY() - 1);
-                        this.speed = new Point2D(-50, 0);
-                        this.direction = LEFT;
-                    }
+                if (!readyToDecide && blocks.get(2).getState().equals(BlockState.EMPTY) && blocks.get(3).getState().equals(BlockState.EMPTY)) {
+                    readyToDecide = true;
+                    System.out.println("Ready to decide");
+                }
+                if (readyToDecide) {
+                    System.out.println("up - 2nd if");
+                    this.speed = new Point2D(30, 0);
+                    this.direction = RIGHT;
+                    readyToDecide = false;
                 }
             }
             case DOWN -> {
-                if (blocks.get(2).getState().equals(BlockState.EMPTY) && blocks.get(3).getState().equals(BlockState.EMPTY)) {
-                    if (Math.round(position.getY() % 20) == 0) {
-                        System.out.println("down - 2nd if");
-                        this.position = new Point2D(this.position.getX(), this.position.getY() + 1);
-                        this.speed = new Point2D(50, 0);
-                        this.direction = RIGHT;
-                    }
+                if (!readyToDecide && blocks.get(2).getState().equals(BlockState.EMPTY) && blocks.get(3).getState().equals(BlockState.EMPTY)) {
+                    readyToDecide = true;
+                    System.out.println("Ready to decide");
+                }
+                if (readyToDecide) {
+                    System.out.println("down - 2nd if");
+                    this.speed = new Point2D(-30, 0);
+                    this.direction = LEFT;
+                    readyToDecide = false;
                 }
             }
         }
     }
+
     private boolean bounce(GridBlock block) {
         if (block.getBoundingBox().contains(above) || block.getBoundingBox().contains(under)) {
             if (texture.equals(GhostTexture.BLINKY) && block.getState().equals(BlockState.FILLED)) {
@@ -299,10 +297,17 @@ public class Ghost extends WorldEntity implements Collisionable {
         return false;
     }
 
-
     public void simulate(double deltaT) {
         position = position.add(speed.multiply(deltaT));
-        this.centerPoint = new Point2D(position.getX() + (size.getX() / 2), position.getY() + (size.getY() / 2));
+        centerPoint = new Point2D(position.getX() + (size.getX() / 2), position.getY() + (size.getY() / 2));
+
+        Point2D tmp = new Point2D(Math.abs(position.getX() - previousPosition.getX()), Math.abs(position.getY() - previousPosition.getY()));
+
+        if (texture.equals(GhostTexture.CLYDE) && (tmp.getX() > 20 || tmp.getY() > 20)) {
+            previousPosition = position;
+            System.out.println("Clyde - decide");
+            decide();
+        }
     }
 
     public Point2D getPosition() {

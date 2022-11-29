@@ -16,12 +16,10 @@ public class App extends Application {
 		launch(args);
 	}
 
-	private ControllerHandler controllerHandler;
-	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			controllerHandler = new ControllerHandler(this, primaryStage);
+			ControllerHandler controllerHandler = new ControllerHandler(primaryStage);
 			controllerHandler.changeScene(GameState.MENU);
 			//Construct a main window with a canvas.
 			primaryStage.resizableProperty().set(false);

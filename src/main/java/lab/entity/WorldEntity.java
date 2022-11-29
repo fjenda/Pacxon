@@ -2,14 +2,13 @@ package lab.entity;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import lab.interfaces.Collisionable;
 import lab.interfaces.DrawableSimulable;
 import lab.enviroment.Game;
 
 public abstract class WorldEntity implements DrawableSimulable {
     protected Game game;
     protected Point2D position;
+    protected Point2D previousPosition;
     protected final Point2D startPosition;
     protected final Point2D size;
     protected Point2D centerPoint;
@@ -18,6 +17,7 @@ public abstract class WorldEntity implements DrawableSimulable {
         this.game = game;
         this.position = position;
         this.startPosition = position;
+        this.previousPosition = position;
         this.size = size;
     }
 
