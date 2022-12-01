@@ -12,6 +12,7 @@ import lab.enums.GhostTexture;
 import lab.interfaces.GameListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
 
@@ -38,8 +39,8 @@ public class Game {
         // Entities
         this.entities = new ArrayList<>();
         this.entities.add(new Pacman(this));
-        this.entities.addAll(ghostLoader.createGhosts());
         this.entities.add(new BonusItem(this));
+        this.entities.addAll(ghostLoader.createGhosts());
     }
 
     public void draw(GraphicsContext gc) {
@@ -64,15 +65,15 @@ public class Game {
         winGame();
         gameOver();
 
-        //Ghost collisions and simulating
+        //Collisions and simulating
         for (WorldEntity entity : entities) {
             entity.simulate(deltaT);
 
             if (entity instanceof Pacman pacman) {
-                for (WorldEntity ghost : entities) {
-                    if (ghost instanceof Ghost ghost1 && ghost1.getBoundingBox().contains(pacman.getCenterPoint())) {
+                for (Ghost ghost : entities.stream().filter(g -> g instanceof Ghost).map(g -> (Ghost) g).toList()) {
+                    if (ghost.getBoundingBox().contains(pacman.getCenterPoint())) {
                         if (pacman.isPowered()) {
-                            ghost1.resetPosition();
+                            ghost.resetPosition();
                             pacman.getScore().update(200);
                         } else {
                             pacman.hit();
@@ -80,25 +81,31 @@ public class Game {
                     }
                 }
 
-                for (WorldEntity bonus : entities) {
-                    if (bonus instanceof BonusItem bonusItem && bonusItem.getBoundingBox().contains(pacman.getCenterPoint())) {
+                for (BonusItem bonusItem : entities.stream().filter(b -> b instanceof BonusItem).map(b -> (BonusItem) b).toList()) {
+                    if (bonusItem.getBoundingBox().contains(pacman.getCenterPoint()) && !bonusItem.isEaten()) {
                         bonusItem.hit();
                         pacman.setPowered(true);
                     }
                 }
             }
 
-            for (Enviroment enviroment : grid.getBlocks()) {
-                if (entity instanceof Ghost ghost && enviroment instanceof GridBlock gridBlock) {
-                    if ((gridBlock.getState().equals(BlockState.FILLED) || gridBlock.getState().equals(BlockState.WALL)) && ghost.getBoundingBox().intersects(gridBlock.getBoundingBox())) {
-                        ghost.hit();
-                        return;
+
+            if (entity instanceof Ghost ghost) {
+                for (GridBlock gridBlock : grid.getBlocks().stream().filter(b -> b instanceof GridBlock).map(b -> (GridBlock) b).toList()) {
+                    if (!ghost.getTexture().equals(GhostTexture.INKY)) {
+                        if ((gridBlock.getState().equals(BlockState.FILLED) || gridBlock.getState().equals(BlockState.WALL)) && ghost.getBoundingBox().intersects(gridBlock.getBoundingBox())) {
+                            ghost.hit();
+                            //return;
+                        }
+                    } else {
+                        if (gridBlock.getState().equals(BlockState.WALL) || gridBlock.getState().equals(BlockState.EMPTY) && ghost.getBoundingBox().intersects(gridBlock.getBoundingBox())) {
+                            ghost.hit();
+                            //return;
+                        }
                     }
 
                     if (gridBlock.getState().equals(BlockState.PATH) && ghost.getBoundingBox().intersects(gridBlock.getBoundingBox())) {
-                        if (getPacman().isPowered()) {
-                            ghost.hit();
-                        } else {
+                        if (!getPacman().isPowered()) {
                             getPacman().hit();
                         }
                     }
@@ -141,15 +148,8 @@ public class Game {
         this.name = name;
     }
 
-    public ArrayList<WorldEntity> getGhosts() {
-        ArrayList<WorldEntity> tmp = new ArrayList<>();
-        for (WorldEntity entity : entities) {
-            if (entity instanceof Ghost ghost) {
-                tmp.add(ghost);
-            }
-        }
-
-        return tmp;
+    public List<WorldEntity> getGhosts() {
+        return entities.stream().filter(e -> e instanceof Ghost).toList();
     }
 
     public String getName() {

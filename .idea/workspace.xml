@@ -4,20 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c0cfd2bc-e8f9-4811-9a49-b5c0fb6b7deb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/lab/entity/BonusItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="c0cfd2bc-e8f9-4811-9a49-b5c0fb6b7deb" name="Changes" comment="Clyde behaviour fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scores.csv" beforeDir="false" afterPath="$PROJECT_DIR$/scores.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lab/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lab/controllers/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/controllers/GameController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lab/controllers/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/controllers/MenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lab/entity/BonusItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/entity/BonusItem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lab/entity/Ghost.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/entity/Ghost.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lab/entity/Pacman.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/entity/Pacman.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lab/enviroment/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/enviroment/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/gui/Health.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/gui/Health.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/gui/Score.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/gui/Score.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/lab/StartScreen.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/lab/StartScreen.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/lab/enviroment/cherry.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/lab/enviroment/cherry.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lab/enviroment/Grid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/enviroment/Grid.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,6 +94,13 @@
       <workItem from="1669570474126" duration="1074000" />
       <workItem from="1669644925475" duration="8804000" />
       <workItem from="1669729660819" duration="5839000" />
+      <workItem from="1669742029735" duration="317000" />
+      <workItem from="1669748769909" duration="10000" />
+      <workItem from="1669793676668" duration="1315000" />
+      <workItem from="1669796224464" duration="222000" />
+      <workItem from="1669799662996" duration="690000" />
+      <workItem from="1669884660690" duration="6373000" />
+      <workItem from="1669894538411" duration="633000" />
     </task>
     <task id="LOCAL-00001" summary="Score saving, UI updates">
       <created>1669570966280</created>

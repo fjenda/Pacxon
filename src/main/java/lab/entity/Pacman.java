@@ -16,6 +16,7 @@ import lab.enviroment.Game;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.stream.Collectors;
 
 import static lab.Constants.PACMAN_SPRITE;
 
@@ -92,7 +93,7 @@ public class Pacman extends WorldEntity implements Collisionable {
 
     public void move(Direction dir) {
         currentTime = System.currentTimeMillis();
-        if (currentTime - switchCooldown < 75) {
+        if (currentTime - switchCooldown < 150) {
             return;
         }
         switchCooldown = currentTime;
@@ -162,22 +163,24 @@ public class Pacman extends WorldEntity implements Collisionable {
             GridBlock tmp = (GridBlock) current;
             queue.remove();
 
-            for (GridBlock gridBlock : game.getGrid().getBlocks()) {
-                if (gridBlock.getBoundingBox().contains(tmp.getCenterPoint().getX(), tmp.getCenterPoint().getY() - 20) && gridBlock.getState().equals(BlockState.EMPTY)) {
-                    gridBlock.setState(BlockState.TEMP);
-                    queue.add(gridBlock);
-                }
-                if (gridBlock.getBoundingBox().contains(tmp.getCenterPoint().getX(), tmp.getCenterPoint().getY() + 20) && gridBlock.getState().equals(BlockState.EMPTY)) {
-                    gridBlock.setState(BlockState.TEMP);
-                    queue.add(gridBlock);
-                }
-                if (gridBlock.getBoundingBox().contains(tmp.getCenterPoint().getX() - 20, tmp.getCenterPoint().getY()) && gridBlock.getState().equals(BlockState.EMPTY)) {
-                    gridBlock.setState(BlockState.TEMP);
-                    queue.add(gridBlock);
-                }
-                if (gridBlock.getBoundingBox().contains(tmp.getCenterPoint().getX() + 20, tmp.getCenterPoint().getY()) && gridBlock.getState().equals(BlockState.EMPTY)) {
-                    gridBlock.setState(BlockState.TEMP);
-                    queue.add(gridBlock);
+            for (Enviroment env : game.getGrid().getBlocks()) {
+                if (env instanceof GridBlock gridBlock) {
+                    if (gridBlock.getBoundingBox().contains(tmp.getCenterPoint().getX(), tmp.getCenterPoint().getY() - 20) && gridBlock.getState().equals(BlockState.EMPTY)) {
+                        gridBlock.setState(BlockState.TEMP);
+                        queue.add(gridBlock);
+                    }
+                    if (gridBlock.getBoundingBox().contains(tmp.getCenterPoint().getX(), tmp.getCenterPoint().getY() + 20) && gridBlock.getState().equals(BlockState.EMPTY)) {
+                        gridBlock.setState(BlockState.TEMP);
+                        queue.add(gridBlock);
+                    }
+                    if (gridBlock.getBoundingBox().contains(tmp.getCenterPoint().getX() - 20, tmp.getCenterPoint().getY()) && gridBlock.getState().equals(BlockState.EMPTY)) {
+                        gridBlock.setState(BlockState.TEMP);
+                        queue.add(gridBlock);
+                    }
+                    if (gridBlock.getBoundingBox().contains(tmp.getCenterPoint().getX() + 20, tmp.getCenterPoint().getY()) && gridBlock.getState().equals(BlockState.EMPTY)) {
+                        gridBlock.setState(BlockState.TEMP);
+                        queue.add(gridBlock);
+                    }
                 }
             }
         }
@@ -191,12 +194,13 @@ public class Pacman extends WorldEntity implements Collisionable {
             }
         }
 
-        for (WorldEntity ghost : game.getGhosts()) {
-            for (Enviroment enviroment : game.getGrid().getBlocks()) {
-                if (enviroment instanceof GridBlock block && block.getBoundingBox().contains(ghost.position.getX(), ghost.position.getY())) {
-                    floodFill(block);
-                }
-            }
+
+        for (WorldEntity ghost : game.getGhosts())  {
+             game.getGrid().getBlocks()
+                           .stream()
+                           .filter(b -> b instanceof GridBlock block &&
+                           block.getBoundingBox().contains(ghost.position.getX(), ghost.position.getY()))
+                           .map(b -> (GridBlock) b).forEach(this::floodFill);
         }
 
         for (Enviroment enviroment : game.getGrid().getBlocks()) {

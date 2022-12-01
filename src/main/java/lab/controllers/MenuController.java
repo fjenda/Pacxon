@@ -13,7 +13,7 @@ import lab.gui.Score;
 import java.io.*;
 import java.util.*;
 
-import static lab.Constants.START_SCREEN;
+//import static lab.Constants.START_SCREEN;
 
 public class MenuController {
     private ControllerHandler controllerHandler;
@@ -27,7 +27,7 @@ public class MenuController {
     @FXML private ListView<Score> scoreListView;
     @FXML private TableView<Score> scoreTableView;
     private final List<Score> scoresList = new LinkedList<>();
-    private final Image background = START_SCREEN;
+    //private final Image background = START_SCREEN;
     public void load(Scene scene, ControllerHandler controllerHandler) {
         this.controllerHandler = controllerHandler;
         this.scene = scene;

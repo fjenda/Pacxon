@@ -26,6 +26,7 @@ public class Ghost extends WorldEntity implements Collisionable {
     private long switchCooldown = 0L;
     private long currentTime;
     private boolean readyToDecide = false;
+    private boolean isSpawned = false;
     Random rnd = new Random();
 
     //textureIndex - 0 - 3, 0 - blinky / 1 - inky / 2 - pinky / 3 - clyde
@@ -33,10 +34,14 @@ public class Ghost extends WorldEntity implements Collisionable {
         super(game, position, new Point2D(20, 20));
 
         this.texture = texture;
+        this.isSpawned = true;
 
         switch (this.texture) {
             case BLINKY -> this.speed = new Point2D(30, 30);    //Blinky - Red - Slow, breaks blocks
-            case INKY -> this.speed = new Point2D(0, 0);        //Inky - Blue - Hides in walls
+            case INKY -> {
+                this.speed = new Point2D(0, 0);                 //Inky - Blue - Hides in walls
+                this.isSpawned = false;
+            }
             case PINKY -> this.speed = new Point2D(75, 75);     //Pinky - Pink - Fast
             case CLYDE -> this.speed = new Point2D(30, 0);      //Clyde - Orange - Moves around walls
             default -> throw new IllegalStateException("Unexpected value: " + this.texture);
@@ -83,16 +88,18 @@ public class Ghost extends WorldEntity implements Collisionable {
     }
 
     public void spawnInky() {
-        if (position.getX() >= 20 && position.getX() <= game.getWidth() - 20 && position.getY() >= 70 && position.getY() <= game.getHeight() - 20) {
+        if (isSpawned) {
             return;
         }
 
-        for (Enviroment enviroment : game.getGrid().getBlocks()) {
-            if (enviroment instanceof GridBlock block && block.getState().equals(BlockState.FILLED)) {
-                this.position = block.getPosition();
-                this.speed = new Point2D(100, 100);
-                return;
-            }
+        Random rnd = new Random();
+        Enviroment env = game.getGrid().getBlocks().get(rnd.nextInt(game.getGrid().getBlocks().size()));
+        if (env instanceof GridBlock block && block.getState().equals(BlockState.FILLED)) {
+            this.position = block.getPosition();
+            this.speed = new Point2D(75, 75);
+            this.isSpawned = true;
+        } else {
+            spawnInky();
         }
     }
 
@@ -124,14 +131,7 @@ public class Ghost extends WorldEntity implements Collisionable {
     }
 
     public void hitClyde() {
-        getNeighbours();
-        for (Enviroment enviroment : game.getGrid().getBlocks()) {
-            for (Enviroment enviroment2 : game.getGrid().getBlocks()) {
-                if (enviroment instanceof GridBlock block && enviroment2 instanceof GridBlock block2 && block != block2) {
-                    if (hug()) return;
-                }
-            }
-        }
+        if (hug()) return;
     }
 
     private ArrayList<GridBlock> getRadar() {
@@ -267,29 +267,47 @@ public class Ghost extends WorldEntity implements Collisionable {
         }
     }
 
+    private void checkBlinkyCollision(GridBlock block) {
+        if (texture.equals(GhostTexture.BLINKY) && block.getState().equals(BlockState.FILLED)) {
+            if (rnd.nextInt(1, 10) < 4) {
+                block.setState(BlockState.EMPTY);
+            }
+        }
+    }
+
     private boolean bounce(GridBlock block) {
-        if (block.getBoundingBox().contains(above) || block.getBoundingBox().contains(under)) {
-            if (texture.equals(GhostTexture.BLINKY) && block.getState().equals(BlockState.FILLED)) {
-                if (rnd.nextInt(1, 10) < 4) {
-                    block.setState(BlockState.EMPTY);
-                }
-            }
+        ArrayList<GridBlock> blocks = getRadar();
 
-            speed = new Point2D(speed.getX(), -speed.getY());
+        if (block.getBoundingBox().contains(above)) {
+            checkBlinkyCollision(block);
+            this.position = new Point2D(this.position.getX(), block.getBoundingBox().getMaxY());
+            this.speed = new Point2D(speed.getX(), -speed.getY());
             calculateDirection();
+
             return true;
-
-        } else if (block.getBoundingBox().contains(left) || block.getBoundingBox().contains(right)) {
-            if (texture.equals(GhostTexture.BLINKY) && block.getState().equals(BlockState.FILLED)) {
-                if (rnd.nextInt(1, 10) < 4) {
-                    block.setState(BlockState.EMPTY);
-                }
-            }
-
-            speed = new Point2D(-speed.getX(), speed.getY());
+        } else if (block.getBoundingBox().contains(under)) {
+            checkBlinkyCollision(block);
+            this.position = new Point2D(this.position.getX(), block.getBoundingBox().getMinY() - this.size.getY());
+            this.speed = new Point2D(speed.getX(), -speed.getY());
             calculateDirection();
+
+            return true;
+        } else if (block.getBoundingBox().contains(left)) {
+            checkBlinkyCollision(block);
+            this.position = new Point2D(block.getBoundingBox().getMaxX(), this.position.getY());
+            this.speed = new Point2D(-speed.getX(), speed.getY());
+            calculateDirection();
+
+            return true;
+        } else if (block.getBoundingBox().contains(right)) {
+            checkBlinkyCollision(block);
+            this.position = new Point2D(block.getBoundingBox().getMinX() - this.size.getX(), this.position.getY());
+            this.speed = new Point2D(-speed.getX(), speed.getY());
+            calculateDirection();
+
             return true;
         }
+
         return false;
     }
 

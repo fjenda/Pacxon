@@ -27,7 +27,9 @@ public class BonusItem extends WorldEntity implements Collisionable {
     public void drawInternal(GraphicsContext gc) {
         gc.save();
 
-        gc.drawImage(texture, position.getX(), position.getY(), size.getX(), size.getY());
+        if (!isEaten) {
+            gc.drawImage(texture, position.getX(), position.getY(), size.getX(), size.getY());
+        }
 
         gc.restore();
     }
@@ -43,15 +45,17 @@ public class BonusItem extends WorldEntity implements Collisionable {
         }
 
         spawn();
-        System.out.println("Spawned");
     }
 
     public void spawn() {
-        for (Enviroment enviroment : game.getGrid().getBlocks()) {
-            if (enviroment instanceof GridBlock block && block.getState().equals(BlockState.FILLED)) {
+        int x = random.nextInt(100);
+        if (x < 2) {
+            Enviroment env = game.getGrid().getBlocks().get(random.nextInt(game.getGrid().getBlocks().size()));
+            if (env instanceof GridBlock block && block.getState().equals(BlockState.FILLED)) {
                 this.position = block.getPosition();
                 isEaten = false;
-                return;
+            } else {
+                spawn();
             }
         }
     }
@@ -64,7 +68,10 @@ public class BonusItem extends WorldEntity implements Collisionable {
     @Override
     public void hit() {
         isEaten = true;
-        position = new Point2D(-20, -20);
         game.getPacman().getScore().update(100);
+    }
+
+    public boolean isEaten() {
+        return this.isEaten;
     }
 }

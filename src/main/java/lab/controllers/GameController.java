@@ -73,6 +73,9 @@ public class GameController {
 
         String name = game.getName();
         int scoreVal = game.getPacman().getScore().getAmount();
+        if (name.isBlank()) {
+            name = "Anonymous";
+        }
         scoresList.add(new Score(name, scoreVal));
 
         try (PrintWriter pw = new PrintWriter(new FileWriter("scores.csv"))) {

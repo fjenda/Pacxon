@@ -8,7 +8,7 @@ import lab.interfaces.Drawable;
 import java.util.ArrayList;
 
 public class Grid extends Enviroment implements Drawable {
-    private final ArrayList<GridBlock> blocks;
+    private final ArrayList<Enviroment> blocks;
     private boolean isGridVisible;
     private long switchCooldown = 0L;
     private long currentTime = 0L;
@@ -33,19 +33,21 @@ public class Grid extends Enviroment implements Drawable {
         }
 
         //EDGES
-        for (GridBlock block : blocks) {
-            if (block.position.getX() == 0 ||
-                block.position.getX() == game.getWidth() - 20 ||
-                block.position.getY() == 50 ||
-                block.position.getY() == game.getHeight() - 20) {
-                block.setState(BlockState.WALL);
+        for (Enviroment env : blocks) {
+            if (env instanceof GridBlock block) {
+                if (block.position.getX() == 0 ||
+                    block.position.getX() == game.getWidth() - 20 ||
+                    block.position.getY() == 50 ||
+                    block.position.getY() == game.getHeight() - 20) {
+                    block.setState(BlockState.WALL);
+                }
             }
         }
 
         this.all = 0;
 
-        for (GridBlock block : blocks) {
-            if (block.getState().equals(BlockState.EMPTY)) {
+        for (Enviroment env : blocks) {
+            if (env instanceof GridBlock block && block.getState().equals(BlockState.EMPTY)) {
                 this.all++;
             }
         }
@@ -55,7 +57,8 @@ public class Grid extends Enviroment implements Drawable {
     public void drawInternal(GraphicsContext gc) {
         gc.save();
 
-        for (GridBlock block : blocks) {
+        for (Enviroment env : blocks) {
+            if (env instanceof GridBlock block)
             block.draw(gc);
         }
 
@@ -71,12 +74,14 @@ public class Grid extends Enviroment implements Drawable {
 
         this.isGridVisible = !this.isGridVisible;
 
-        for (GridBlock block : blocks) {
-            block.setBlockVisible(isGridVisible);
+        for (Enviroment env : blocks) {
+            if (env instanceof GridBlock block) {
+                block.setBlockVisible(isGridVisible);
+            }
         }
     }
 
-    public ArrayList<GridBlock> getBlocks() {
+    public ArrayList<Enviroment> getBlocks() {
         return this.blocks;
     }
 

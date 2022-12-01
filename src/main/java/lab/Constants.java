@@ -17,8 +17,8 @@ public final class Constants {
     public static final Image BLOCK_SPRITE;
     public static final Image BLOCK_TRANSPARENT_SPRITE;
     public static final Image HEART_SPRITE;
-    public static final Image START_SCREEN;
-    public static final Image GAME_OVER_SCREEN;
+    //public static final Image START_SCREEN;
+    //public static final Image GAME_OVER_SCREEN;
     public static final Image CHERRY_SPRITE;
     public static final String LEVEL1;
     public static final String LEVEL2;
@@ -53,8 +53,8 @@ public final class Constants {
         CHERRY_SPRITE = new Image(Constants.class.getResourceAsStream("enviroment/cherry.png"));
 
         //SCREEN ITEMS
-        START_SCREEN = new Image(Constants.class.getResourceAsStream("gui/start-screen.gif"));
-        GAME_OVER_SCREEN = new Image(Constants.class.getResourceAsStream("gui/end-screen.gif"));
+        //START_SCREEN = new Image(Constants.class.getResourceAsStream("gui/start-screen.gif"));
+        //GAME_OVER_SCREEN = new Image(Constants.class.getResourceAsStream("gui/end-screen.gif"));
 
         //FONT
         Font.loadFont(Constants.class.getResource("font/emulogic.ttf").toExternalForm(), 20);
