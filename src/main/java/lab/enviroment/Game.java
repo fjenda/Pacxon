@@ -79,6 +79,32 @@ public class Game {
                             pacman.hit();
                         }
                     }
+
+                    if (ghost.getTexture().equals(GhostTexture.CLYDE) && !pacman.isPowered()) {
+                        List<GridBlock> neigbours = ghost.getRadar();
+                        switch (ghost.getDirection()) {
+                            case UP -> {
+                                if (neigbours.get(3).getBoundingBox().contains(pacman.getCenterPoint())) {
+                                    pacman.hit();
+                                }
+                            }
+                            case DOWN -> {
+                                if (neigbours.get(2).getBoundingBox().contains(pacman.getCenterPoint())) {
+                                    pacman.hit();
+                                }
+                            }
+                            case LEFT -> {
+                                if (neigbours.get(0).getBoundingBox().contains(pacman.getCenterPoint())) {
+                                    pacman.hit();
+                                }
+                            }
+                            case RIGHT -> {
+                                if (neigbours.get(1).getBoundingBox().contains(pacman.getCenterPoint())) {
+                                    pacman.hit();
+                                }
+                            }
+                        }
+                    }
                 }
 
                 for (BonusItem bonusItem : entities.stream().filter(b -> b instanceof BonusItem).map(b -> (BonusItem) b).toList()) {

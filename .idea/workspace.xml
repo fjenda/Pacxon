@@ -4,17 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c0cfd2bc-e8f9-4811-9a49-b5c0fb6b7deb" name="Changes" comment="Clyde behaviour fix">
+    <list default="true" id="c0cfd2bc-e8f9-4811-9a49-b5c0fb6b7deb" name="Changes" comment="Updated ghost collisions">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scores.csv" beforeDir="false" afterPath="$PROJECT_DIR$/scores.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lab/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/controllers/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/controllers/GameController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lab/controllers/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/controllers/MenuController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/entity/BonusItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/entity/BonusItem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lab/entity/Ghost.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/entity/Ghost.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/entity/Pacman.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/entity/Pacman.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lab/enviroment/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/enviroment/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab/enviroment/Grid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab/enviroment/Grid.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,6 +42,7 @@
     <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2HqhzfW0KQV5EHzHMkJzjv5HBld" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -65,6 +62,9 @@
       <recent name="C:\Users\Honza\IdeaProjects\Pacxon\src\main\resources\lab" />
       <recent name="C:\Users\Honza\IdeaProjects\Pacxon\src\main\resources" />
       <recent name="C:\Users\Honza\IdeaProjects\Pacxon\src\main\java\lab" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="lab.controllers" />
     </key>
   </component>
   <component name="RunManager">
@@ -94,13 +94,7 @@
       <workItem from="1669570474126" duration="1074000" />
       <workItem from="1669644925475" duration="8804000" />
       <workItem from="1669729660819" duration="5839000" />
-      <workItem from="1669742029735" duration="317000" />
-      <workItem from="1669748769909" duration="10000" />
-      <workItem from="1669793676668" duration="1315000" />
-      <workItem from="1669796224464" duration="222000" />
-      <workItem from="1669799662996" duration="690000" />
-      <workItem from="1669884660690" duration="6373000" />
-      <workItem from="1669894538411" duration="633000" />
+      <workItem from="1670061180215" duration="2811000" />
     </task>
     <task id="LOCAL-00001" summary="Score saving, UI updates">
       <created>1669570966280</created>
@@ -123,7 +117,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669731965362</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Commiting some files">
+      <created>1670061250376</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1670061250376</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,6 +157,8 @@
     <MESSAGE value="Score saving, UI updates" />
     <MESSAGE value="Fixed score saving into .csv, minor changes in ghost behaviour" />
     <MESSAGE value="Clyde behaviour fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="Clyde behaviour fix" />
+    <MESSAGE value="Commiting some files" />
+    <MESSAGE value="Updated ghost collisions" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated ghost collisions" />
   </component>
 </project>

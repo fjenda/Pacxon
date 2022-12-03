@@ -24,9 +24,8 @@ public class Ghost extends WorldEntity implements Collisionable {
     private Direction direction = RIGHT;
     private Point2D above, under, left, right;
     private long switchCooldown = 0L;
-    private long currentTime;
     private boolean readyToDecide = false;
-    private boolean isSpawned = false;
+    private boolean isSpawned;
     Random rnd = new Random();
 
     //textureIndex - 0 - 3, 0 - blinky / 1 - inky / 2 - pinky / 3 - clyde
@@ -61,7 +60,26 @@ public class Ghost extends WorldEntity implements Collisionable {
     }
 
     public void resetPosition() {
-        this.position = startPosition;
+
+        List<GridBlock> points = game.getGrid().getBlocks().stream().filter(b -> b instanceof GridBlock).map(b -> (GridBlock) b).toList();
+        GridBlock gridBlock = points.get(rnd.nextInt(points.size()));
+
+        switch (texture) {
+            case PINKY, BLINKY, CLYDE -> {
+                if (gridBlock.getState().equals(BlockState.EMPTY)) {
+                    this.position = gridBlock.getPosition();
+                } else {
+                    resetPosition();
+                }
+            }
+            case INKY -> {
+                if (gridBlock.getState().equals(BlockState.FILLED)) {
+                    this.position = gridBlock.getPosition();
+                } else {
+                    resetPosition();
+                }
+            }
+        }
     }
 
     public void getNeighbours() {
@@ -73,7 +91,7 @@ public class Ghost extends WorldEntity implements Collisionable {
 
     @Override
     public void hit() {
-        currentTime = System.currentTimeMillis();
+        long currentTime = System.currentTimeMillis();
         if (currentTime - switchCooldown < 50) {
             return;
         }
@@ -131,10 +149,10 @@ public class Ghost extends WorldEntity implements Collisionable {
     }
 
     public void hitClyde() {
-        if (hug()) return;
+        hug();
     }
 
-    private ArrayList<GridBlock> getRadar() {
+    public ArrayList<GridBlock> getRadar() {
         Point2D above = new Point2D(centerPoint.getX(), centerPoint.getY() - 15);
         Point2D under = new Point2D(centerPoint.getX(), centerPoint.getY() + 15);
         Point2D left = new Point2D(centerPoint.getX() - 15, centerPoint.getY());
@@ -276,8 +294,6 @@ public class Ghost extends WorldEntity implements Collisionable {
     }
 
     private boolean bounce(GridBlock block) {
-        ArrayList<GridBlock> blocks = getRadar();
-
         if (block.getBoundingBox().contains(above)) {
             checkBlinkyCollision(block);
             this.position = new Point2D(this.position.getX(), block.getBoundingBox().getMaxY());
