@@ -58,7 +58,6 @@ public final class Constants {
 
         //FONT
         Font.loadFont(Constants.class.getResource("font/emulogic.ttf").toExternalForm(), 20);
-        Font.loadFont(Constants.class.getResource("font/pacfont.ttf").toExternalForm(), 50);
     }
 
 }

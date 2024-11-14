@@ -16,7 +16,6 @@ import lab.enviroment.Game;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.stream.Collectors;
 
 import static lab.Constants.PACMAN_SPRITE;
 
@@ -81,10 +80,6 @@ public class Pacman extends WorldEntity implements Collisionable {
 
     public Point2D getPosition() {
         return this.position;
-    }
-
-    public Point2D getSize() {
-        return this.size;
     }
 
     public Rectangle2D getBoundingBox() {

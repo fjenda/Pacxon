@@ -11,17 +11,14 @@ public class Grid extends Enviroment implements Drawable {
     private final ArrayList<Enviroment> blocks;
     private boolean isGridVisible;
     private long switchCooldown = 0L;
-    private long currentTime = 0L;
-    private final int rows;
-    private final int cols;
     private int all;
 
     public Grid(Game game) {
         super(game, null, null, false);
 
         int blockSize = 20;
-        this.cols = (int) (game.getWidth() / blockSize);
-        this.rows = (int) ((game.getHeight() - 50) / blockSize);
+        int cols = (int) (game.getWidth() / blockSize);
+        int rows = (int) ((game.getHeight() - 50) / blockSize);
 
         this.blocks = new ArrayList<>();
 
@@ -58,15 +55,16 @@ public class Grid extends Enviroment implements Drawable {
         gc.save();
 
         for (Enviroment env : blocks) {
-            if (env instanceof GridBlock block)
-            block.draw(gc);
+            if (env instanceof GridBlock block) {
+                block.draw(gc);
+            }
         }
 
         gc.restore();
     }
 
     public void showGrid() {
-        currentTime = System.currentTimeMillis();
+        long currentTime = System.currentTimeMillis();
         if (currentTime - switchCooldown < 75) {
             return;
         }
@@ -83,14 +81,6 @@ public class Grid extends Enviroment implements Drawable {
 
     public ArrayList<Enviroment> getBlocks() {
         return this.blocks;
-    }
-
-    public int getRows() {
-        return rows;
-    }
-
-    public int getCols() {
-        return cols;
     }
 
     public int getAll() {
